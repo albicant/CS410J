@@ -7,8 +7,10 @@ import java.util.ArrayList;
 /**                                                                                 
  * This class is represents a <code>Student</code>.                                 
  */                                                                                 
-public class Student extends Human {                                                
-                                                                                    
+public class Student extends Human {
+
+  private final double gpa;
+
   /**                                                                               
    * Creates a new <code>Student</code>                                             
    *                                                                                
@@ -23,7 +25,9 @@ public class Student extends Human {
    *        The student's gender ("male" or "female", or "other", case insensitive)
    */                                                                               
   public Student(String name, ArrayList<String> classes, double gpa, String gender) {
+
     super(name);
+    this.gpa = gpa;
   }
 
   /**                                                                               
@@ -37,8 +41,10 @@ public class Student extends Human {
   /**                                                                               
    * Returns a <code>String</code> that describes this                              
    * <code>Student</code>.                                                          
-   */                                                                               
+   */
+  @Override
   public String toString() {
+
     throw new UnsupportedOperationException("Not implemented yet");
   }
 
@@ -50,5 +56,9 @@ public class Student extends Human {
   public static void main(String[] args) {
     System.err.println("Missing command line arguments");
     System.exit(1);
+  }
+
+  public double getGpa() {
+    return this.gpa;
   }
 }

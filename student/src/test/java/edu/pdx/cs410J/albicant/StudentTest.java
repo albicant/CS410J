@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.albicant;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,6 +21,27 @@ public class StudentTest
     String name = "Pat";
     var pat = new Student(name, new ArrayList<>(), 0.0, "Doesn't matter");
     assertThat(pat.getName(), equalTo(name));
+  }
+
+  @Test
+  public void studentHasExpectedGpa() {
+    double gpa = 3.25;
+    var student = new Student("Name", new ArrayList<>(), gpa, "Other");
+    assertThat(student.getGpa(), equalTo(gpa));
+  }
+
+
+  @Ignore
+  @Test
+  public void exampleStudentFromAssignment() {
+    ArrayList<String> classes = new ArrayList<>();
+    classes.add("Algorithms");
+    classes.add("Operating Systems");
+    classes.add("Java");
+    var dave = new Student("Dave", classes, 3.64, "male");
+
+    assertThat(dave.toString(), equalTo("Dave has a GPA of 3.64 and is taking 3 classes: Algorithms, " +
+            "OperatingSystems, and Java.  He says \"This class is too much work\"."));
   }
 
 }
