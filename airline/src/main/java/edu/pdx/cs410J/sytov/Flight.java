@@ -2,14 +2,29 @@ package edu.pdx.cs410J.sytov;
 
 import edu.pdx.cs410J.AbstractFlight;
 
+/**
+ * Flight class implements AbstractFlight class.
+ */
 public class Flight extends AbstractFlight {
 
+  /**
+   * @param number is the flight number.
+   * @param src is the three-letter code of departure airport
+   * @param depart is the Departure date and time (24-hour time) represented as a String
+   * @param dest is the three-letter code of arrival airport
+   * @param arrive is the arrival date and time (24-hour time) represented as a String
+   */
   private final int number;
   private final String src;
   private final String depart;
   private final String dest;
   private final String arrive;
 
+  /**
+   * Helper function for time validation
+   * @param time is the String to be validated
+   * @return true if the time is in valid format, false otherwise
+   */
   private boolean validateTime(String time) {
     String[] tokens = time.split(" ");
     if (tokens.length != 2)
@@ -36,6 +51,14 @@ public class Flight extends AbstractFlight {
     return true;
   }
 
+  /**
+   * The Constructor of the Flight class
+   * @param number is the flight number.
+   * @param src is the three-letter code of departure airport
+   * @param depart is the Departure date and time (24-hour time) represented as a String
+   * @param dest is the three-letter code of arrival airport
+   * @param arrive is the arrival date and time (24-hour time) represented as a String
+   */
   public Flight(int number, String src, String depart, String dest, String arrive) {
     this.number = number;
 
@@ -62,37 +85,43 @@ public class Flight extends AbstractFlight {
     this.arrive = arrive;
   }
 
+  /**
+   * @return the flight number
+   */
   @Override
   public int getNumber() {
-
     return this.number;
   }
 
+  /**
+   * @return the three-letter code of departure airport
+   */
   @Override
   public String getSource() {
-
-//    throw new UnsupportedOperationException("This method is not implemented yet");
     return this.src;
   }
 
+  /**
+   * @return the Departure date and time (24-hour time) represented as a String
+   */
   @Override
   public String getDepartureString() {
-
-//    throw new UnsupportedOperationException("This method is not implemented yet");
     return this.depart;
   }
 
+  /**
+   * @return the three-letter code of arrival airport
+   */
   @Override
   public String getDestination() {
-
-//    throw new UnsupportedOperationException("This method is not implemented yet");
     return this.dest;
   }
 
+  /**
+   * @return the arrival date and time (24-hour time) represented as a String
+   */
   @Override
   public String getArrivalString() {
-
-//    throw new UnsupportedOperationException("This method is not implemented yet");
     return this.arrive;
   }
 }

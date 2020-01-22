@@ -7,6 +7,10 @@ import java.util.Collection;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+
+/**
+ * Unit tests for the {@link Airline} class.
+ */
 public class AirlineTest {
 
     public Airline airline = new Airline("Delta");

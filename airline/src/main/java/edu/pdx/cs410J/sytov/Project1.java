@@ -5,10 +5,17 @@ package edu.pdx.cs410J.sytov;
  */
 public class Project1 {
 
+  /**
+   * Prints the information about the latest added flight.
+   * @param flight is an object of the Flight class
+   */
   public static void print(Flight flight) {
     System.out.println(flight.toString());
   }
 
+  /**
+   * Prints the README for the Project.
+   */
   public static void printReadMe() {
     String str1 = "CS410J Winter2020 - Project 1 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
@@ -17,6 +24,11 @@ public class Project1 {
     System.out.println(str1+str2+str3);
   }
 
+  /**
+   * The main function. Parses the string of arguments from the console. Creates an instance of the Airline class and adds a Flight to the Airline,
+   * if sufficient arguments provided. Optionally prints the "README" and/or the information about the added Flight.
+   * @param args a string of console arguments
+   */
   public static void main(String[] args) {
 
     for (String arg : args) {
@@ -32,8 +44,14 @@ public class Project1 {
     }
 
     String airline_name = args[0];
-//    try catch
-    int number = Integer.parseInt(args[1]);
+    int number = 0;
+    try {
+      number = Integer.parseInt(args[1]);
+    } catch (Exception e) {
+      System.out.println("Error: Cannot convert \'" + args[1] + "\' to type int!");
+      System.exit(1);
+    }
+
     String src = args[2];
     String depart = args[3] + " " + args[4];
     String dest = args[5];
