@@ -48,8 +48,7 @@ public class Project1 {
     try {
       number = Integer.parseInt(args[1]);
     } catch (Exception e) {
-      System.out.println("Error: Cannot convert \'" + args[1] + "\' to type int!");
-      System.exit(1);
+      throw new IllegalArgumentException("Error: Cannot convert \'" + args[1] + "\' to type int!");
     }
 
     String src = args[2];

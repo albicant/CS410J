@@ -26,6 +26,8 @@ public class Flight extends AbstractFlight {
    * @return true if the time is in valid format, false otherwise
    */
   private boolean validateTime(String time) {
+    if (!time.matches("[/: 0-9]+"))
+      return false;
     String[] tokens = time.split(" ");
     if (tokens.length != 2)
       return false;
@@ -43,7 +45,7 @@ public class Flight extends AbstractFlight {
     if(Integer.parseInt(tokens_date[0]) < 1 || Integer.parseInt(tokens_date[0]) > 12 ||
      Integer.parseInt(tokens_date[1]) < 1 || Integer.parseInt(tokens_date[1]) > 31 ||
      Integer.parseInt(tokens_date[2]) < 1900 ||
-     Integer.parseInt(tokens_time[0]) < 0 || Integer.parseInt(tokens_time[0]) > 24 ||
+     Integer.parseInt(tokens_time[0]) < 0 || Integer.parseInt(tokens_time[0]) > 23 ||
      Integer.parseInt(tokens_time[1]) < 0 || Integer.parseInt(tokens_time[1]) > 59) {
       return false;
     }
@@ -69,7 +71,7 @@ public class Flight extends AbstractFlight {
     this.src = src;
 
     if(!validateTime(depart)) {
-      throw new IllegalArgumentException("The time is in the wrong format!");
+      throw new IllegalArgumentException("The departure date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
     }
     this.depart = depart;
 
@@ -80,7 +82,7 @@ public class Flight extends AbstractFlight {
     this.dest = dest;
 
     if(!validateTime(arrive)) {
-      throw new IllegalArgumentException("The time is in the wrong format!");
+      throw new IllegalArgumentException("The arrival date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
     }
     this.arrive = arrive;
   }
