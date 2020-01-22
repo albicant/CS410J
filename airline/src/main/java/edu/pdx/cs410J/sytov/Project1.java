@@ -1,7 +1,5 @@
 package edu.pdx.cs410J.sytov;
 
-import edu.pdx.cs410J.AbstractAirline;
-
 /**
  * The main class for the CS410J airline Project
  */
@@ -11,21 +9,33 @@ public class Project1 {
     System.out.println(flight.toString());
   }
 
+  public static void printReadMe() {
+    String str1 = "CS410J Winter2020 - Project 1 by Gennadii Sytov\n";
+    String str2 = "This project parses the command line arguments to create an Airline class\n";
+    String str3 = "and a Flight class. And then it adds the Flight to the Airline. The program has\n " +
+            "\"-print\" and \"-README\" options.";
+    System.out.println(str1+str2+str3);
+  }
+
   public static void main(String[] args) {
 
-//    System.err.println("Missing command line arguments");
+    for (String arg : args) {
+      if(arg.equals("-README")) {
+        printReadMe();
+        System.exit(1);
+      }
+    }
     int number_of_arguments = args.length;
-    if (number_of_arguments < 8)
-      System.exit(-1);
-
-    boolean used_print = false;
-    boolean used_readme = false;
+    if (number_of_arguments < 8) {
+      System.err.println("Missing command line arguments. Minimum 8!");
+      System.exit(1);
+    }
 
     String airline_name = args[0];
+//    try catch
     int number = Integer.parseInt(args[1]);
     String src = args[2];
     String depart = args[3] + " " + args[4];
-//    System.out.println(depart);
     String dest = args[5];
     String arrive = args[6] + " " + args[7];
 
@@ -33,33 +43,14 @@ public class Project1 {
     Flight flight = new Flight(number, src, depart, dest, arrive);
     airline.addFlight(flight);
 
-    if (number_of_arguments >= 9) {
-      if(args[8].equals("-print")) {
+    for (int i = 8; i < args.length; ++i) {
+      if (args[i].equals("-print")) {
         print(flight);
-        used_print = true;
-      }
-      else if(args[8].equals("-README")) {
-        // do something
-        used_readme = true;
       }
     }
 
-    if (number_of_arguments == 10) {
-      if(args[9].equals("-print") && !used_print) {
-        print(flight);
-        used_print = true;
-      }
-      else if (args[9].equals("-README") && !used_readme) {
-        // do something
-        used_readme = true;
-      }
-    }
-
-//    for (String arg : args) {
-//      System.out.println(arg);
-//    }
-//    Flight flight = new Flight(43, "PDX", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");  // Refer to one of Dave's classes so that we can be sure it is on the classpath
     System.exit(1);
+
   }
 
 }
