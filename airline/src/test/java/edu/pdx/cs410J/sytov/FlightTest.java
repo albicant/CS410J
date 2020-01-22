@@ -12,20 +12,20 @@ public class FlightTest {
 
   public Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");
   
-  @Test(expected = UnsupportedOperationException.class)
-  public void getArrivalStringNeedsToBeImplemented() {
-    this.flight.getArrivalString();
-  }
-
-  @Test
-  public void initiallyAllFlightsHaveTheSameNumber() {
-    assertThat(this.flight.getNumber(), equalTo(42));
-  }
-
-  @Test
-  public void forProject1ItIsOkayIfGetDepartureTimeReturnsNull() {
-    assertThat(this.flight.getDeparture(), is(nullValue()));
-  }
+//  @Test(expected = UnsupportedOperationException.class)
+//  public void getArrivalStringNeedsToBeImplemented() {
+//    this.flight.getArrivalString();
+//  }
+//
+//  @Test
+//  public void initiallyAllFlightsHaveTheSameNumber() {
+//    assertThat(this.flight.getNumber(), equalTo(42));
+//  }
+//
+//  @Test
+//  public void forProject1ItIsOkayIfGetDepartureTimeReturnsNull() {
+//    assertThat(this.flight.getDeparture(), is(nullValue()));
+//  }
 
   @Test
   public void flightHasExpectedNumber() {
