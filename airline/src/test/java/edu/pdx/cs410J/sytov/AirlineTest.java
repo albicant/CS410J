@@ -27,6 +27,12 @@ public class AirlineTest {
         this.airline.addFlight(flight);
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void airlineAddsFlightWithArrivalTimeMalformatted() {
+        Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/20/17 9:25");
+        this.airline.addFlight(flight);
+    }
+
     @Test
     public void airlineHasExpectedFlight() {
         Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");

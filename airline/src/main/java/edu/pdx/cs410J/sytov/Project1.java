@@ -10,6 +10,25 @@ import java.util.List;
  */
 public class Project1 {
 
+//  private static boolean print_flag = false;
+//
+//  private static List<String> parseArgs(String[] args) {
+//    List<String> arguments = new ArrayList<String>(Arrays.asList(args));
+//    Iterator<String> it = arguments.iterator();
+//    while(it.hasNext()) {
+//      String arg = it.next();
+//      if(arg.equals("-print")) {
+//        print_flag = true;
+//        it.remove();
+//      }
+//      else if (arg.startsWith("-")) {
+//        System.err.println("Unknown option \'" + arg + "\'.");
+//        System.exit(1);
+//      }
+//    }
+//    return arguments;
+//  }
+
   /**
    * Prints the information about the latest added flight.
    * @param flight is an object of the Flight class
@@ -60,6 +79,7 @@ public class Project1 {
     }
 
     args = arguments.toArray(new String[0]);
+//    args = parseArgs(args).toArray(new String[0]);
     if (args.length < 8) {
       System.err.println("Missing command line arguments.");
       System.exit(1);
@@ -105,7 +125,15 @@ public class Project1 {
     String arrive = args[index + 5] + " " + args[index + 6];
 
     Airline airline = new Airline(airline_name);
-    Flight flight = new Flight(number, src, depart, dest, arrive);
+    Flight flight = null;
+//    Flight flight = new Flight(number, src, depart, dest, arrive);
+    try {
+      flight = new Flight(number, src, depart, dest, arrive);
+    } catch (Exception e) {
+      System.err.println("Error: Cannot create the flight.");
+      System.exit(1);
+    }
+
     airline.addFlight(flight);
 
     if(print_flag) {

@@ -67,26 +67,30 @@ public class Flight extends AbstractFlight {
     src = src.toUpperCase();
     if (src.length() != 3 || !src.matches("[A-Z]+")) {
       System.err.println("Error: The source has to contain the three-letter code of departure airport!");
-      System.exit(1);
+      throw new IllegalArgumentException();
+//      System.exit(1);
     }
     this.src = src;
 
     if(!validateTime(depart)) {
       System.err.println("Error: The departure date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
-      System.exit(1);
+//      System.exit(1);
+      throw new IllegalArgumentException();
     }
     this.depart = depart;
 
     dest = dest.toUpperCase();
     if (dest.length() != 3 || !dest.matches("[A-Z]+")) {
       System.err.println("Error: The destination has to contain the three-letter code of departure airport!");
-      System.exit(1);
+//      System.exit(1);
+      throw new IllegalArgumentException();
     }
     this.dest = dest;
 
     if(!validateTime(arrive)) {
       System.err.println("Error: The arrival date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
-      System.exit(1);
+//      System.exit(1);
+      throw new IllegalArgumentException();
     }
     this.arrive = arrive;
   }
