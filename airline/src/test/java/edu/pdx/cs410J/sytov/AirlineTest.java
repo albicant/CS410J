@@ -21,12 +21,6 @@ public class AirlineTest {
         assertThat(this.airline.getName(), equalTo(name));
     }
 
-    @Test
-    public void airlineAddsFlights() {
-        Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");
-        this.airline.addFlight(flight);
-    }
-
     @Test (expected = IllegalArgumentException.class)
     public void airlineAddsFlightWithArrivalTimeMalformatted() {
         Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/20/17 9:25");
