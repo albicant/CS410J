@@ -41,5 +41,17 @@ public class FlightTest {
     String arrive = "3/16/2017 9:25";
     assertThat(this.flight.getArrivalString(), equalTo(arrive));
   }
+
+  @Test
+  public void flightValidatesTimeTrue() {
+    String time = "3/16/2017 9:25";
+    assertThat(this.flight.validateTime(time), equalTo(true));
+  }
+
+  @Test
+  public void flightValidatesTimeFalse() {
+    String time = "3/16/20/17 9:25";
+    assertThat(this.flight.validateTime(time), equalTo(false));
+  }
   
 }

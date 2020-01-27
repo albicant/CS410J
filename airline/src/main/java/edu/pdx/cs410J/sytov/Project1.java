@@ -29,10 +29,6 @@ public class Project1 {
     System.out.println(str1+str2+str3);
   }
 
-//  public static void searchForOptions(List<String> arguments) {
-
-//  }
-
   /**
    * The main function. Parses the string of arguments from the console. Creates an instance of the Airline class and adds a Flight to the Airline,
    * if sufficient arguments provided. Optionally prints the "README" and/or the information about the added Flight.
@@ -60,7 +56,6 @@ public class Project1 {
       else if (arg.startsWith("-")) {
         System.err.println("Unknown option \'" + arg + "\'.");
         System.exit(1);
-//        it.remove();
       }
     }
 

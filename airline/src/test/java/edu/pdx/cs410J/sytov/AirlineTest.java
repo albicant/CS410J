@@ -22,8 +22,13 @@ public class AirlineTest {
     }
 
     @Test
-    public void airlineHasExpectedFlight() {
+    public void airlineAddsFlights() {
+        Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");
+        this.airline.addFlight(flight);
+    }
 
+    @Test
+    public void airlineHasExpectedFlight() {
         Flight flight = new Flight(42, "pdx", "3/15/2017 10:39", "AMS", "3/16/2017 9:25");
         this.airline.addFlight(flight);
         Collection<Flight> flights = this.airline.getFlights();

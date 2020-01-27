@@ -25,7 +25,7 @@ public class Flight extends AbstractFlight {
    * @param time is the String to be validated
    * @return true if the time is in valid format, false otherwise
    */
-  private boolean validateTime(String time) {
+  public boolean validateTime(String time) {
     if (!time.matches("[/: 0-9]+"))
       return false;
     String[] tokens = time.split(" ");
