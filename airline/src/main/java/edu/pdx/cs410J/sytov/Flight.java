@@ -88,7 +88,7 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * @return the flight number
+   * Returns the flight number
    */
   @Override
   public int getNumber() {
@@ -96,7 +96,7 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * @return the three-letter code of departure airport
+   * Returns the three-letter code of departure airport
    */
   @Override
   public String getSource() {
@@ -104,7 +104,7 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * @return the Departure date and time (24-hour time) represented as a String
+   * Returns the Departure date and time (24-hour time) represented as a String
    */
   @Override
   public String getDepartureString() {
@@ -112,7 +112,7 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * @return the three-letter code of arrival airport
+   * Returns the three-letter code of arrival airport
    */
   @Override
   public String getDestination() {
@@ -120,7 +120,7 @@ public class Flight extends AbstractFlight {
   }
 
   /**
-   * @return the arrival date and time (24-hour time) represented as a String
+   * Returns the arrival date and time (24-hour time) represented as a String
    */
   @Override
   public String getArrivalString() {

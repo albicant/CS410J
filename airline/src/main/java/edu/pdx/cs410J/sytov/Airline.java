@@ -28,7 +28,7 @@ public class Airline<T extends AbstractFlight> extends AbstractAirline<T> {
     }
 
     /**
-     * @return the name of the airline.
+     * Returns the name of the airline.
      */
     @Override
     public String getName() {
