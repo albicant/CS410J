@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * The main class for the CS410J airline Project
  */
-public class Project1 {
+public class Project2 {
 
 
   /**
