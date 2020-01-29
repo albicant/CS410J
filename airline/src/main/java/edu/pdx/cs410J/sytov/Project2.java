@@ -45,6 +45,8 @@ public class Project2 {
     }
 
     boolean print_flag = false;
+    boolean text_file_flag = false;
+    String file_name = null;
 
     List<String> arguments = new ArrayList<String>(Arrays.asList(args));
     Iterator<String> it = arguments.iterator();
@@ -52,6 +54,21 @@ public class Project2 {
       String arg = it.next();
       if(arg.equals("-print")) {
         print_flag = true;
+        it.remove();
+      }
+      else if(arg.equals("-textFile")) {
+        text_file_flag = true;
+        it.remove();
+        if(!it.hasNext()) {
+          System.err.println("-textFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        arg = it.next();
+        if(arg.startsWith("-")) {
+          System.err.println("-textFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        file_name = arg;
         it.remove();
       }
       else if (arg.startsWith("-")) {

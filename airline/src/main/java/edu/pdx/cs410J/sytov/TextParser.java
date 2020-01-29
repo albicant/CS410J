@@ -6,13 +6,20 @@ import edu.pdx.cs410J.ParserException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 public class TextParser implements AirlineParser<Airline> {
 
-    private String file_name;
+    private final String file_name;
+    private final File file;
 
-    public TextParser(String name) {
-        this.file_name = name;
+    public TextParser(String file_name) {
+        this.file_name = file_name;
+        this.file = new File(file_name);
+    }
+
+    public boolean checkFileExistence() {
+        return this.file.exists();
     }
 
     private Flight createFlight(String str) {
@@ -46,23 +53,14 @@ public class TextParser implements AirlineParser<Airline> {
         return flight;
     }
 
-    public Airline parse() throws ParserException {
+    private Airline readFromFile() throws IOException {
 
-        File file = new File(this.file_name);
-        if(!file.exists()) {
-            throw new ParserException("Unable to load from file " + this.file_name);
-        }
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(file));
-        } catch (Exception e) {
-            System.err.println(e + " Cannot read from the file " + this.file_name);
-        }
+        BufferedReader br = new BufferedReader(new FileReader(this.file));
 
         String airline_name = br.readLine();
         if (airline_name == null) {
             br.close();
-            throw new ParserException("Cannot create Airline. The file is empty!");
+            throw new IOException("Cannot create Airline. The file is empty!");
         }
         Airline airline = new Airline(airline_name);
 
@@ -74,10 +72,53 @@ public class TextParser implements AirlineParser<Airline> {
         br.close();
 
         return airline;
+    }
 
-//        } catch (ParserException ex) {
-//            System.err.println(ex + ": Unable to load from file " + this.file_name);
+    public Airline parse() throws ParserException {
+
+//        File file = new File(this.file_name);
+        if(!this.file.exists()) {
+            throw new ParserException("Unable to load from file " + this.file_name);
+        }
+
+        Airline airline;
+        try {
+            airline = this.readFromFile();
+        }
+        catch (Exception e) {
+            throw new ParserException("Cannot create the airline from this file.\n" + e);
+        }
+//        BufferedReader br = null;
+//        try {
+//            br = new BufferedReader(new FileReader(file));
+//        } catch (Exception e) {
+//            System.err.println(e + " Cannot read from the file " + this.file_name);
 //        }
+//
+//        String airline_name = br.readLine();
+//        if (airline_name == null) {
+//            try {
+//                br.close();
+//            } catch (Exception e) {
+//                System.err.println(e);
+//            }
+//
+//            throw new ParserException("Cannot create Airline. The file is empty!");
+//        }
+//        Airline airline = new Airline(airline_name);
+//
+//        String st;
+//        while((st = br.readLine()) != null) {
+//            Flight flight = this.createFlight(st);
+//            airline.addFlight(flight);
+//        }
+//        try {
+//            br.close();
+//        } catch (Exception e) {
+//            System.err.println(e);
+//        }
+
+        return airline;
 
     }
 }
