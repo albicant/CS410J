@@ -22,8 +22,9 @@ public class Project2 {
   public static void printReadMe() {
     String str1 = "CS410J Winter2020 - Project 2 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
-    String str3 = "and a Flight class. And then it adds the Flight to the Airline. The program has\n " +
-            "\"-print\" and \"-README\" options.";
+    String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
+            "Optionally, the file can be specified to upload and save the Airline from/into it.\n" +
+            "The program has \"-print\", \"-textFile\" followed by the file name, and \"-README\" options.";
     System.out.println(str1+str2+str3);
   }
 

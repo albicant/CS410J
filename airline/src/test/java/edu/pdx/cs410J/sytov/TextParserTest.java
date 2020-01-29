@@ -12,6 +12,9 @@ import java.util.Collection;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * Unit tests for the {@link TextParser} class.
+ */
 public class TextParserTest {
 
     @Test

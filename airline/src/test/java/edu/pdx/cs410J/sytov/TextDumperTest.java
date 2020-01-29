@@ -9,6 +9,9 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * Unit tests for the {@link TextDumper} class.
+ */
 public class TextDumperTest {
 
     @Test

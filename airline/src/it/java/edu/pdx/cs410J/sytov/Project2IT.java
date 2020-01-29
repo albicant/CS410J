@@ -195,5 +195,14 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("airline name from the file does not match the airline name from the console!"));
     }
 
+    @Test
+    public void testCreateAirlineFromMalformatedFileName() {
+        String str = "-textFile . -print Test18 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Cannot create airline from the file"));
+    }
+
 
 }
