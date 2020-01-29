@@ -1,13 +1,9 @@
 package edu.pdx.cs410J.sytov;
 
-import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AbstractAirline;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.regex.Matcher;
 
 /**
  * Airline class implements AbstractAirline class.

@@ -127,7 +127,7 @@ public class Project2 {
         try {
           airline = tp.parse();
         } catch (Exception e) {
-          System.err.println(e + "\n Cannot create airline from the file");
+          System.err.println("Cannot create airline from the file");
           System.exit(1);
         }
       }
@@ -145,7 +145,7 @@ public class Project2 {
     try {
       flight = new Flight(number, src, depart, dest, arrive);
     } catch (Exception e) {
-      System.err.println(e + "Error: Cannot create the flight.");
+      System.err.println("Error: Cannot create the flight.");
       System.exit(1);
     }
 
@@ -156,7 +156,7 @@ public class Project2 {
       try {
         td.dump(airline);
       } catch (Exception e) {
-        System.err.println(e + "\n Cannot save the airline to the file!");
+        System.err.println("Cannot save the airline to the file!");
         System.exit(1);
       }
     }

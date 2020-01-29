@@ -22,7 +22,7 @@ public class TextDumper implements AirlineDumper<Airline> {
 
     /**
      * Constructor, initialises file_name and file variables.
-     * @param file_name The name of the provided file.
+     * @param name The name of the provided file.
      */
     public TextDumper(String name) {
         this.file_name = name;
@@ -37,7 +37,8 @@ public class TextDumper implements AirlineDumper<Airline> {
         err = new PrintWriter(System.err, true);
 
         if(airline == null) {
-            throw new IOException("Airline does not exist. Error saving it into the file!");
+            System.err.println("Airline does not exist. Error saving it into the file!");
+            throw new IOException();
         }
         try {
             Writer writer = new FileWriter(this.file_name);
@@ -62,7 +63,7 @@ public class TextDumper implements AirlineDumper<Airline> {
             writer.flush();
             writer.close();
         } catch(IOException ex) {
-            err.println(ex + "Cannot write airline to the file \"" + this.file_name + "\"");
+            err.println("Cannot write airline to the file \"" + this.file_name + "\"");
         }
 
     }

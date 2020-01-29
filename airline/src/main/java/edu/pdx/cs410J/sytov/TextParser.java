@@ -45,17 +45,20 @@ public class TextParser implements AirlineParser<Airline> {
         String[] args = str.split(" ");
 
         if(args.length < 7) {
-            throw new IllegalArgumentException("Missing flight arguments.");
+            System.err.println("Missing flight arguments.");
+            throw new IllegalArgumentException();
         }
         else if(args.length > 7) {
-            throw new IllegalArgumentException("Unknown flight arguments.");
+            System.err.println("Unknown flight arguments.");
+            throw new IllegalArgumentException();
         }
 
         int number = 0;
         try {
             number = Integer.parseInt(args[0]);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Error: Cannot convert \'" + args[0] + "\' to type int!");
+            System.err.println("Error: Cannot convert \'" + args[0] + "\' to type int!");
+            throw new IllegalArgumentException();
         }
 
         String src = args[1];
@@ -67,7 +70,8 @@ public class TextParser implements AirlineParser<Airline> {
         try {
             flight = new Flight(number, src, depart, dest, arrive);
         } catch (Exception e) {
-            throw new IllegalArgumentException(e + "Error: Cannot create the flight.");
+            System.err.println("Error: Cannot create the flight.");
+            throw new IllegalArgumentException();
         }
         return flight;
     }
@@ -84,7 +88,8 @@ public class TextParser implements AirlineParser<Airline> {
         String airline_name = br.readLine();
         if (airline_name == null) {
             br.close();
-            throw new IOException("Cannot create Airline. The file is empty!");
+            System.err.println("Cannot create Airline. The file is empty!");
+            throw new IOException();
         }
         Airline airline = new Airline(airline_name);
 
@@ -106,7 +111,8 @@ public class TextParser implements AirlineParser<Airline> {
     public Airline parse() throws ParserException {
 
         if(!this.file.exists()) {
-            throw new ParserException("Unable to load from file " + this.file_name);
+            System.err.println("Unable to load from file " + this.file_name);
+            throw new ParserException("");
         }
 
         Airline airline;
@@ -114,7 +120,8 @@ public class TextParser implements AirlineParser<Airline> {
             airline = this.readFromFile();
         }
         catch (Exception e) {
-            throw new ParserException("Cannot create the airline from this file.\n" + e);
+            System.err.println("Cannot create the airline from this file");
+            throw new ParserException("");
         }
 
         return airline;
