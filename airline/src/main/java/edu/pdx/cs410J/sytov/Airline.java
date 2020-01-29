@@ -3,20 +3,23 @@ package edu.pdx.cs410J.sytov;
 import edu.pdx.cs410J.AbstractFlight;
 import edu.pdx.cs410J.AbstractAirline;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.regex.Matcher;
 
 /**
  * Airline class implements AbstractAirline class.
  */
-public class Airline<T extends AbstractFlight> extends AbstractAirline<T> {
+public class Airline extends AbstractAirline<Flight> {
 
     /**
      *  @param name is the Airline name
      *  @param flights it the collection of flights represented as the HashSet of Flight class.
      */
     private final String name;
-    private Collection<T> flights;
+    private Collection<Flight> flights;
 
     /**
      * Class constructor. Creates an instance of the Airline class.
@@ -24,7 +27,7 @@ public class Airline<T extends AbstractFlight> extends AbstractAirline<T> {
      */
     public Airline(String name) {
         this.name = name;
-        this.flights = new HashSet<T>();
+        this.flights = new LinkedHashSet<>();
     }
 
     /**
@@ -36,19 +39,32 @@ public class Airline<T extends AbstractFlight> extends AbstractAirline<T> {
         return this.name;
     }
 
+    public boolean checkIfCollectionContainsFlights(Flight flight) {
+        for(Flight fl : this.flights) {
+            if(fl.getNumber() == flight.getNumber() && fl.getSource().equals(flight.getSource()) &&
+               fl.getDepartureString().equals(flight.getDepartureString()) &&
+               fl.getDestination().equals(flight.getDestination()) &&
+               fl.getArrivalString().equals(flight.getArrivalString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Adds a new Flight to the collection of Flights
      */
     @Override
-    public void addFlight(T flight) {
-        this.flights.add(flight);
+    public void addFlight(Flight flight) {
+        if(!this.checkIfCollectionContainsFlights(flight))
+            this.flights.add(flight);
     }
 
     /**
      * Returns the collection of Flights within the Airline.
      */
     @Override
-    public Collection<T> getFlights() {
+    public Collection<Flight> getFlights() {
         return this.flights;
     }
 }

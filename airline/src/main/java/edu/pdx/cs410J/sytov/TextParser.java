@@ -76,7 +76,6 @@ public class TextParser implements AirlineParser<Airline> {
 
     public Airline parse() throws ParserException {
 
-//        File file = new File(this.file_name);
         if(!this.file.exists()) {
             throw new ParserException("Unable to load from file " + this.file_name);
         }
@@ -88,37 +87,7 @@ public class TextParser implements AirlineParser<Airline> {
         catch (Exception e) {
             throw new ParserException("Cannot create the airline from this file.\n" + e);
         }
-//        BufferedReader br = null;
-//        try {
-//            br = new BufferedReader(new FileReader(file));
-//        } catch (Exception e) {
-//            System.err.println(e + " Cannot read from the file " + this.file_name);
-//        }
-//
-//        String airline_name = br.readLine();
-//        if (airline_name == null) {
-//            try {
-//                br.close();
-//            } catch (Exception e) {
-//                System.err.println(e);
-//            }
-//
-//            throw new ParserException("Cannot create Airline. The file is empty!");
-//        }
-//        Airline airline = new Airline(airline_name);
-//
-//        String st;
-//        while((st = br.readLine()) != null) {
-//            Flight flight = this.createFlight(st);
-//            airline.addFlight(flight);
-//        }
-//        try {
-//            br.close();
-//        } catch (Exception e) {
-//            System.err.println(e);
-//        }
 
         return airline;
-
     }
 }

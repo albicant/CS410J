@@ -1,9 +1,6 @@
 package edu.pdx.cs410J.sytov;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * The main class for the CS410J airline Project
@@ -23,7 +20,7 @@ public class Project2 {
    * Prints the README for the Project.
    */
   public static void printReadMe() {
-    String str1 = "CS410J Winter2020 - Project 1 by Gennadii Sytov\n";
+    String str1 = "CS410J Winter2020 - Project 2 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
     String str3 = "and a Flight class. And then it adds the Flight to the Airline. The program has\n " +
             "\"-print\" and \"-README\" options.";
@@ -122,7 +119,27 @@ public class Project2 {
     String dest = args[index + 4];
     String arrive = args[index + 5] + " " + args[index + 6];
 
-    Airline airline = new Airline(airline_name);
+    Airline airline = null;
+    if(text_file_flag) {
+      TextParser tp = new TextParser(file_name);
+      if(tp.checkFileExistence()) {
+        try {
+          airline = tp.parse();
+        } catch (Exception e) {
+          System.err.println(e + "\n Cannot create airline from the file");
+          System.exit(1);
+        }
+      }
+    }
+    if(airline == null) {
+      airline = new Airline(airline_name);
+    }
+
+    if(!airline_name.equals(airline.getName())) {
+      System.err.println("Error: airline name from the file does not match the airline name from the console!");
+      System.exit(1);
+    }
+
     Flight flight = null;
     try {
       flight = new Flight(number, src, depart, dest, arrive);
@@ -133,9 +150,20 @@ public class Project2 {
 
     airline.addFlight(flight);
 
+    if(text_file_flag) {
+      TextDumper td = new TextDumper(file_name);
+      try {
+        td.dump(airline);
+      } catch (Exception e) {
+        System.err.println(e + "\n Cannot save the airline to the file!");
+        System.exit(1);
+      }
+    }
+
     if(print_flag) {
       print(flight);
     }
+
 
     System.exit(0);
   }

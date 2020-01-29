@@ -1,7 +1,13 @@
 package edu.pdx.cs410J.sytov;
 
 import edu.pdx.cs410J.InvokeMainTestCase;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -87,7 +93,7 @@ public class Project2IT extends InvokeMainTestCase {
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), equalTo("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 05/04/2020 16:00\n"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 05/04/2020 16:00"));
     }
 
     @Test
@@ -96,7 +102,7 @@ public class Project2IT extends InvokeMainTestCase {
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), equalTo("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 09/04/2020 16:00\n"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 09/04/2020 16:00"));
     }
 
     @Test
@@ -125,5 +131,69 @@ public class Project2IT extends InvokeMainTestCase {
         assertThat(result.getExitCode(), equalTo(1));
         assertThat(result.getTextWrittenToStandardError(), containsString("has to contain the three-letter code"));
     }
+
+    @Test
+    public void testTextfileNameIsMissing() {
+        String str = "-print -textFile Test13 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+    }
+
+    @Test
+    public void testAirlineWritesToAFile() {
+        String str = "-textFile test14.txt -print Test14 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 09/09/2020 16:00"));
+    }
+
+    @Test
+    public void testTextfileHasExtraArguments() {
+        String str = "-textFile test15.txt -print Test15 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00 extra";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Unknown command line arguments"));
+    }
+
+    @Test
+    public void testTextfileIsMalformatted() throws IOException {
+        String file_name = "test16.txt";
+        File file = new File(file_name);
+        if(!file.exists()) {
+            Writer writer = new FileWriter(file_name);
+            writer.write("Test16\n123PDX03/03/2020 12:00 O/RD 09/09/2020 16:00");
+            writer.flush();
+            writer.close();
+        }
+
+        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Cannot create the airline from this file"));
+    }
+
+    @Test
+    public void testAirlineNameIsDifferentThanTheOneFoundInTheTextFile() throws IOException {
+        String file_name = "test17.txt";
+        File file = new File(file_name);
+        if(!file.exists()) {
+            Writer writer = new FileWriter(file_name);
+            writer.write("Test17\n123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00\n");
+            writer.flush();
+            writer.close();
+        }
+
+        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("airline name from the file does not match the airline name from the console!"));
+    }
+
 
 }

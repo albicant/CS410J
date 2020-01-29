@@ -126,4 +126,5 @@ public class Flight extends AbstractFlight {
   public String getArrivalString() {
     return this.arrive;
   }
+
 }
