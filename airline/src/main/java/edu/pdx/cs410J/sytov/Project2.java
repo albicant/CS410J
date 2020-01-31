@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * The main class for the CS410J airline Project
  */
-public class Project1 {
+public class Project2 {
 
 
   /**
@@ -20,12 +20,11 @@ public class Project1 {
    * Prints the README for the Project.
    */
   public static void printReadMe() {
-    String str1 = "CS410J Winter2020 - Project 1 by Gennadii Sytov\n";
+    String str1 = "CS410J Winter2020 - Project 2 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
     String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
-            "The program has \"-print\" and \"-README\" options.";
-//            "Optionally, the file can be specified to upload and save the Airline from/into it.\n" +
-//            "The program has \"-print\", \"-textFile\" followed by the file name, and \"-README\" options.";
+            "Optionally, the file can be specified to upload and save the Airline from/into it.\n" +
+            "The program has \"-print\", \"-textFile\" followed by the file name, and \"-README\" options.";
     System.out.println(str1+str2+str3);
   }
 
@@ -44,8 +43,8 @@ public class Project1 {
     }
 
     boolean print_flag = false;
-//    boolean text_file_flag = false;
-//    String file_name = null;
+    boolean text_file_flag = false;
+    String file_name = null;
 
     List<String> arguments = new ArrayList<String>(Arrays.asList(args));
     Iterator<String> it = arguments.iterator();
@@ -55,21 +54,21 @@ public class Project1 {
         print_flag = true;
         it.remove();
       }
-//      else if(arg.equals("-textFile")) {
-//        text_file_flag = true;
-//        it.remove();
-//        if(!it.hasNext()) {
-//          System.err.println("-textFile flag is specified but the file name is not provided!");
-//          System.exit(1);
-//        }
-//        arg = it.next();
-//        if(arg.startsWith("-")) {
-//          System.err.println("-textFile flag is specified but the file name is not provided!");
-//          System.exit(1);
-//        }
-//        file_name = arg;
-//        it.remove();
-//      }
+      else if(arg.equals("-textFile")) {
+        text_file_flag = true;
+        it.remove();
+        if(!it.hasNext()) {
+          System.err.println("-textFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        arg = it.next();
+        if(arg.startsWith("-")) {
+          System.err.println("-textFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        file_name = arg;
+        it.remove();
+      }
       else if (arg.startsWith("-")) {
         System.err.println("Unknown option \'" + arg + "\'.");
         System.exit(1);
@@ -121,27 +120,26 @@ public class Project1 {
     String dest = args[index + 4];
     String arrive = args[index + 5] + " " + args[index + 6];
 
-    Airline airline = new Airline(airline_name);
-//    Airline airline = null;
-//    if(text_file_flag) {
-//      TextParser tp = new TextParser(file_name);
-//      if(tp.checkFileExistence()) {
-//        try {
-//          airline = tp.parse();
-//        } catch (Exception e) {
-//          System.err.println("Cannot create airline from the file");
-//          System.exit(1);
-//        }
-//      }
-//    }
-//    if(airline == null) {
-//      airline = new Airline(airline_name);
-//    }
+    Airline airline = null;
+    if(text_file_flag) {
+      TextParser tp = new TextParser(file_name);
+      if(tp.checkFileExistence()) {
+        try {
+          airline = tp.parse();
+        } catch (Exception e) {
+          System.err.println("Cannot create airline from the file");
+          System.exit(1);
+        }
+      }
+    }
+    if(airline == null) {
+      airline = new Airline(airline_name);
+    }
 
-//    if(!airline_name.equals(airline.getName())) {
-//      System.err.println("Error: airline name from the file does not match the airline name from the console!");
-//      System.exit(1);
-//    }
+    if(!airline_name.equals(airline.getName())) {
+      System.err.println("Error: airline name from the file does not match the airline name from the console!");
+      System.exit(1);
+    }
 
     Flight flight = null;
     try {
@@ -153,15 +151,15 @@ public class Project1 {
 
     airline.addFlight(flight);
 
-//    if(text_file_flag) {
-//      TextDumper td = new TextDumper(file_name);
-//      try {
-//        td.dump(airline);
-//      } catch (Exception e) {
-//        System.err.println("Cannot save the airline to the file!");
-//        System.exit(1);
-//      }
-//    }
+    if(text_file_flag) {
+      TextDumper td = new TextDumper(file_name);
+      try {
+        td.dump(airline);
+      } catch (Exception e) {
+        System.err.println("Cannot save the airline to the file!");
+        System.exit(1);
+      }
+    }
 
     if(print_flag) {
       print(flight);
