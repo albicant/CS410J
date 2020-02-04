@@ -49,9 +49,9 @@ public class TextDumper implements AirlineDumper<Airline> {
             for(Flight flight : flights) {
                 int number = flight.getNumber();
                 String src = flight.getSource();
-                String depart = flight.getDepartureString();
+                String depart = flight.getDepartureToSave();
                 String dest = flight.getDestination();
-                String arrive = flight.getArrivalString();
+                String arrive = flight.getArrivalToSave();
 
                 writer.write(Integer.toString(number) + " ");
                 writer.write(src + " ");

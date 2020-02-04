@@ -5,7 +5,9 @@ import java.util.*;
 /**
  * The main class for the CS410J airline Project
  */
-public class Project2 {
+public class Project3 {
+
+  private static final int number_of_arguments = 10;
 
 
   /**
@@ -20,7 +22,7 @@ public class Project2 {
    * Prints the README for the Project.
    */
   public static void printReadMe() {
-    String str1 = "CS410J Winter2020 - Project 2 by Gennadii Sytov\n";
+    String str1 = "CS410J Winter2020 - Project 3 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
     String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
             "Optionally, the file can be specified to upload and save the Airline from/into it.\n" +
@@ -76,7 +78,7 @@ public class Project2 {
     }
 
     args = arguments.toArray(new String[0]);
-    if (args.length < 8) {
+    if (args.length < number_of_arguments) {
       System.err.println("Missing command line arguments.");
       System.exit(1);
     }
@@ -98,11 +100,11 @@ public class Project2 {
       airline_name = args[0];
     }
 
-    if(args.length < index + 7) {
+    if(args.length < index + (number_of_arguments - 1)) {
       System.err.println("Missing command line arguments.");
       System.exit(1);
     }
-    else if(args.length > index + 7) {
+    else if(args.length > index + (number_of_arguments - 1)) {
       System.err.println("Unknown command line arguments.");
       System.exit(1);
     }
@@ -116,9 +118,9 @@ public class Project2 {
     }
 
     String src = args[index + 1];
-    String depart = args[index + 2] + " " + args[index + 3];
-    String dest = args[index + 4];
-    String arrive = args[index + 5] + " " + args[index + 6];
+    String depart = args[index + 2] + " " + args[index + 3] + " " + args[index + 4];
+    String dest = args[index + 5];
+    String arrive = args[index + 6] + " " + args[index + 7] + " " + args[index + 8];
 
     Airline airline = null;
     if(text_file_flag) {

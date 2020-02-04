@@ -2,10 +2,17 @@ package edu.pdx.cs410J.sytov;
 
 import edu.pdx.cs410J.AbstractFlight;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * Flight class implements AbstractFlight class.
  */
-public class Flight extends AbstractFlight {
+public class Flight extends AbstractFlight implements Comparable<Flight> {
 
   /**
    * @param number is the flight number.
@@ -17,8 +24,10 @@ public class Flight extends AbstractFlight {
   private final int number;
   private final String src;
   private final String depart;
+  private Date depart_date;
   private final String dest;
   private final String arrive;
+  private Date arrive_date;
 
   /**
    * Helper function for time validation
@@ -26,10 +35,10 @@ public class Flight extends AbstractFlight {
    * @return true if the time is in valid format, false otherwise
    */
   public boolean validateTime(String time) {
-    if (!time.matches("[/: 0-9]+"))
+    if (!time.matches("[/: 0-9]+(am|pm)$"))
       return false;
     String[] tokens = time.split(" ");
-    if (tokens.length != 2)
+    if (tokens.length != 3)
       return false;
     String[] tokens_date = tokens[0].split("/");
     String[] tokens_time = tokens[1].split(":");
@@ -45,12 +54,22 @@ public class Flight extends AbstractFlight {
     if(Integer.parseInt(tokens_date[0]) < 1 || Integer.parseInt(tokens_date[0]) > 12 ||
      Integer.parseInt(tokens_date[1]) < 1 || Integer.parseInt(tokens_date[1]) > 31 ||
      Integer.parseInt(tokens_date[2]) < 1900 ||
-     Integer.parseInt(tokens_time[0]) < 0 || Integer.parseInt(tokens_time[0]) > 23 ||
+     Integer.parseInt(tokens_time[0]) < 1 || Integer.parseInt(tokens_time[0]) > 12 ||
      Integer.parseInt(tokens_time[1]) < 0 || Integer.parseInt(tokens_time[1]) > 59) {
       return false;
     }
+    if(!tokens[2].equals("am") && !tokens[2].equals("pm"))
+      return false;
 
     return true;
+  }
+
+  private void setDateAndTime() throws ParseException {
+
+    String pattern = "MM/dd/yyyy hh:mm a";
+
+    this.depart_date = new SimpleDateFormat(pattern).parse(this.depart);
+    this.arrive_date = new SimpleDateFormat(pattern).parse(this.arrive);
   }
 
   /**
@@ -72,7 +91,7 @@ public class Flight extends AbstractFlight {
     this.src = src;
 
     if(!validateTime(depart)) {
-      System.err.println("The departure date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
+      System.err.println("The departure date and time is in the wrong format! Must be mm/dd/yyyy hh:mm am_pm");
       throw new IllegalArgumentException();
     }
     this.depart = depart;
@@ -85,10 +104,17 @@ public class Flight extends AbstractFlight {
     this.dest = dest;
 
     if(!validateTime(arrive)) {
-      System.err.println("The arrival date and time is in the wrong format! Must be dd/mm/yyyy hh:mm");
+      System.err.println("The arrival date and time is in the wrong format! Must be mm/dd/yyyy hh:mm am_pm");
       throw new IllegalArgumentException();
     }
     this.arrive = arrive;
+
+    try {
+      this.setDateAndTime();
+    } catch (ParseException e) {
+      System.err.println("The date and time is in the wrong format! Must be mm/dd/yyyy hh:mm am_pm");
+      throw new IllegalArgumentException();
+    }
   }
 
   /**
@@ -112,7 +138,16 @@ public class Flight extends AbstractFlight {
    */
   @Override
   public String getDepartureString() {
+    DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US);
+    return dateFormat.format(this.depart_date);
+  }
+
+  public String getDepartureToSave() {
     return this.depart;
+  }
+
+  public String getArrivalToSave() {
+    return this.arrive;
   }
 
   /**
@@ -128,7 +163,32 @@ public class Flight extends AbstractFlight {
    */
   @Override
   public String getArrivalString() {
-    return this.arrive;
+    DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US);
+    return dateFormat.format(this.arrive_date);
   }
 
+  @Override
+  public Date getDeparture() {
+    return this.depart_date;
+  }
+
+  @Override
+  public Date getArrival() {
+    return this.arrive_date;
+  }
+
+  @Override
+  public int compareTo(Flight flight) {
+    if(this.getSource().equals(flight.getSource())) {
+      long dif = this.getDeparture().getTime() - flight.getDeparture().getTime();
+      if (dif < 0)
+        return -1;
+      else if (dif == 0)
+        return 0;
+      else
+        return 1;
+    }
+
+    return this.getSource().compareTo(flight.getSource());
+  }
 }

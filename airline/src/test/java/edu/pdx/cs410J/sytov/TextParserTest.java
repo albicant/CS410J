@@ -24,8 +24,8 @@ public class TextParserTest {
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
             writer.write("Airline 1\n");
-            writer.write("42 PDX 3/15/2017 10:39 AMS 3/16/2017 9:25\n");
-            writer.write("43 PDX 3/15/2017 10:39 AMS 3/16/2017 9:25\n");
+            writer.write("42 PDX 3/15/2017 10:39 am AMS 3/16/2017 9:25 am\n");
+            writer.write("43 PDX 3/15/2017 10:39 am AMS 3/16/2017 9:25 am\n");
             writer.flush();
             writer.close();
         }

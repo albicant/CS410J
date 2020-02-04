@@ -19,6 +19,7 @@ public class TextParser implements AirlineParser<Airline> {
      */
     private final String file_name;
     private final File file;
+    private final int number_of_arguments = 9;
 
     /**
      * Constructor, initialises file_name and file variables.
@@ -44,11 +45,11 @@ public class TextParser implements AirlineParser<Airline> {
     private Flight createFlight(String str) {
         String[] args = str.split(" ");
 
-        if(args.length < 7) {
+        if(args.length < number_of_arguments) {
             System.err.println("Missing flight arguments.");
             throw new IllegalArgumentException();
         }
-        else if(args.length > 7) {
+        else if(args.length > number_of_arguments) {
             System.err.println("Unknown flight arguments.");
             throw new IllegalArgumentException();
         }
@@ -62,9 +63,9 @@ public class TextParser implements AirlineParser<Airline> {
         }
 
         String src = args[1];
-        String depart = args[2] + " " + args[3];
-        String dest = args[4];
-        String arrive = args[5] + " " + args[6];
+        String depart = args[2] + " " + args[3] + " " + args[4];
+        String dest = args[5];
+        String arrive = args[6] + " " + args[7] + " " + args[8];
 
         Flight flight;
         try {

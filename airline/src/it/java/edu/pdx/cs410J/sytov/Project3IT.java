@@ -13,15 +13,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * An integration test for the {@link Project2} main class.
+ * An integration test for the {@link Project3} main class.
  */
-public class Project2IT extends InvokeMainTestCase {
+public class Project3IT extends InvokeMainTestCase {
 
     /**
-     * Invokes the main method of {@link Project2} with the given arguments.
+     * Invokes the main method of {@link Project3} with the given arguments.
      */
     private MainMethodResult invokeMain(String... args) {
-        return invokeMain( Project2.class, args );
+        return invokeMain( Project3.class, args );
     }
 
   /**
@@ -43,7 +43,7 @@ public class Project2IT extends InvokeMainTestCase {
 
   @Test
   public void testFlightNumberNotInteger() {
-      String str = "Test3 NUMBER PDX 03/03/2020 12:00 ORD 03/03/2020 16:00";
+      String str = "Test3 NUMBER PDX 03/03/2020 12:00 am ORD 03/03/2020 4:00 pm";
       String[] args = str.split(" ");
       MainMethodResult result = invokeMain(args);
       assertThat(result.getExitCode(), equalTo(1));
@@ -52,7 +52,7 @@ public class Project2IT extends InvokeMainTestCase {
 
   @Test
   public void testDepartureTimeMalformatted() {
-      String str = "Test4 123 PDX 03/03/2020 12:XX ORD 03/03/2020 16:00";
+      String str = "Test4 123 PDX 03/03/2020 12:XX am ORD 03/03/2020 4:00 pm";
       String[] args = str.split(" ");
       MainMethodResult result = invokeMain(args);
       assertThat(result.getExitCode(), equalTo(1));
@@ -61,7 +61,7 @@ public class Project2IT extends InvokeMainTestCase {
 
   @Test
   public void testArrivalTimeMalformatted() {
-      String str = "Test5 123 PDX 03/03/2020 12:00 ORD 01/04/20/1 16:00";
+      String str = "Test5 123 PDX 03/03/2020 12:00 am ORD 01/04/20/1 4:00 pm";
       String[] args = str.split(" ");
       MainMethodResult result = invokeMain(args);
       assertThat(result.getExitCode(), equalTo(1));
@@ -70,7 +70,7 @@ public class Project2IT extends InvokeMainTestCase {
 
   @Test
   public void testUnkownCommandLineOption() {
-      String str = "-fred Test6 600 PDX 03/03/2020 12:00 ORD 04/04/2020 16:00";
+      String str = "-fred Test6 600 PDX 03/03/2020 12:00 am ORD 04/04/2020 4:00 pm";
       String[] args = str.split(" ");
       MainMethodResult result = invokeMain(args);
       assertThat(result.getExitCode(), equalTo(1));
@@ -79,7 +79,7 @@ public class Project2IT extends InvokeMainTestCase {
 
   @Test
   public void testUnkownCommandLineArgument() {
-      String str = "Test7 123 PDX 03/03/2020 12:00 ORD 04/04/2020 16:00 fred";
+      String str = "Test7 123 PDX 03/03/2020 12:00 am ORD 04/04/2020 4:00 pm fred";
       String[] args = str.split(" ");
       MainMethodResult result = invokeMain(args);
       assertThat(result.getExitCode(), equalTo(1));
@@ -88,25 +88,25 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testPrintingOutAFlight() {
-        String str = "-print Test8 123 PDX 03/03/2020 12:00 ORD 05/04/2020 16:00";
+        String str = "-print Test8 123 PDX 03/03/2020 12:00 am ORD 05/04/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 05/04/2020 16:00"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 3/3/20, 12:00 AM arrives ORD at 5/4/20, 4:00 PM"));
     }
 
     @Test
     public void testMultiWordAirlineName() {
-        String str = "-print \"Test 9\" 123 PDX 03/03/2020 12:00 ORD 09/04/2020 16:00";
+        String str = "-print \"Test 9\" 123 PDX 03/03/2020 12:00 am ORD 09/04/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 09/04/2020 16:00"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 3/3/20, 12:00 AM arrives ORD at 9/4/20, 4:00 PM"));
     }
 
     @Test
     public void testMissingArrivalTime() {
-        String str = "Test10 123 PDX 03/03/2020 12:00 ORD 09/09/2020";
+        String str = "Test10 123 PDX 03/03/2020 12:00 am ORD 09/09/2020";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -115,7 +115,7 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testAirportCodeIsTooShort() {
-        String str = "Test11 123 P 03/03/2020 12:00 O 09/09/2020 16:00";
+        String str = "Test11 123 P 03/03/2020 12:00 am O 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -124,7 +124,7 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testAirportCodeHasNumber() {
-        String str = "Test12 123 PD7 03/03/2020 12:00 O 09/09/2020 16:00";
+        String str = "Test12 123 PD7 03/03/2020 12:00 am O 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -133,7 +133,7 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testTextfileNameIsMissing() {
-        String str = "-print -textFile Test13 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String str = "-print -textFile Test13 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -142,16 +142,16 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testAirlineWritesToAFile() {
-        String str = "-textFile test14.txt -print Test14 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String str = "-textFile test14.txt -print Test14 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
-        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 03/03/2020 12:00 arrives ORD at 09/09/2020 16:00"));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs PDX at 3/3/20, 12:00 AM arrives ORD at 9/9/20, 4:00 PM"));
     }
 
     @Test
     public void testTextfileHasExtraArguments() {
-        String str = "-textFile test15.txt -print Test15 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00 extra";
+        String str = "-textFile test15.txt -print Test15 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm extra";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -164,12 +164,12 @@ public class Project2IT extends InvokeMainTestCase {
         File file = new File(file_name);
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
-            writer.write("Test16\n123PDX03/03/2020 12:00 O/RD 09/09/2020 16:00");
+            writer.write("Test16\n123PDX03/03/2020 12:00 am O/RD 09/09/2020 4:00 pm");
             writer.flush();
             writer.close();
         }
 
-        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -182,12 +182,12 @@ public class Project2IT extends InvokeMainTestCase {
         File file = new File(file_name);
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
-            writer.write("Test17\n123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00\n");
+            writer.write("Test17\n123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm\n");
             writer.flush();
             writer.close();
         }
 
-        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String str = "-textFile " + file_name + " -print Test16 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -196,7 +196,7 @@ public class Project2IT extends InvokeMainTestCase {
 
     @Test
     public void testCreateAirlineFromMalformatedFileName() {
-        String str = "-textFile . -print Test18 123 PDX 03/03/2020 12:00 ORD 09/09/2020 16:00";
+        String str = "-textFile . -print Test18 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));

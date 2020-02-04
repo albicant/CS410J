@@ -2,6 +2,7 @@ package edu.pdx.cs410J.sytov;
 
 import edu.pdx.cs410J.AbstractAirline;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 
@@ -23,7 +24,7 @@ public class Airline extends AbstractAirline<Flight> {
      */
     public Airline(String name) {
         this.name = name;
-        this.flights = new LinkedHashSet<>();
+        this.flights = new ArrayList<>();
     }
 
     /**
