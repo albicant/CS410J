@@ -203,5 +203,14 @@ public class Project3IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Cannot create airline from the file"));
     }
 
+    @Test
+    public void testTextFileAndPrettyFileAreTheSame() {
+        String str = "-textFile test.airline -pretty test.airline -print Test18 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error: text file name and pretty file name cannot be the same!"));
+    }
+
 
 }

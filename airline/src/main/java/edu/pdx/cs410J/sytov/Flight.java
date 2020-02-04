@@ -180,7 +180,7 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
   @Override
   public int compareTo(Flight flight) {
     if(this.getSource().equals(flight.getSource())) {
-      long dif = this.getDeparture().getTime() - flight.getDeparture().getTime();
+      long dif = this.depart_date.getTime() - flight.getDeparture().getTime();
       if (dif < 0)
         return -1;
       else if (dif == 0)

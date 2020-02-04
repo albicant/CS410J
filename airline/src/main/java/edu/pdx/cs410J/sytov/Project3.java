@@ -46,7 +46,9 @@ public class Project3 {
 
     boolean print_flag = false;
     boolean text_file_flag = false;
+    boolean pretty_flag = false;
     String file_name = null;
+    String pretty_name = null;
 
     List<String> arguments = new ArrayList<String>(Arrays.asList(args));
     Iterator<String> it = arguments.iterator();
@@ -71,6 +73,21 @@ public class Project3 {
         file_name = arg;
         it.remove();
       }
+      else if(arg.equals("-pretty")) {
+        pretty_flag = true;
+        it.remove();
+        if(!it.hasNext()) {
+          System.err.println("-pretty flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        arg = it.next();
+        if(arg.startsWith("-")) {
+          System.err.println("-pretty flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        pretty_name = arg;
+        it.remove();
+      }
       else if (arg.startsWith("-")) {
         System.err.println("Unknown option \'" + arg + "\'.");
         System.exit(1);
@@ -80,6 +97,11 @@ public class Project3 {
     args = arguments.toArray(new String[0]);
     if (args.length < number_of_arguments) {
       System.err.println("Missing command line arguments.");
+      System.exit(1);
+    }
+
+    if(file_name != null && pretty_name != null & file_name.equals(pretty_name)) {
+      System.err.println("Error: text file name and pretty file name cannot be the same!");
       System.exit(1);
     }
 
@@ -161,6 +183,10 @@ public class Project3 {
         System.err.println("Cannot save the airline to the file!");
         System.exit(1);
       }
+    }
+
+    if(pretty_flag) {
+      //print pretty file
     }
 
     if(print_flag) {
