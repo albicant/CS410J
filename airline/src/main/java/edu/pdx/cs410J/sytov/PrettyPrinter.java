@@ -52,13 +52,13 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
             Collections.sort(flights);
             int number_of_flights = flights.size();
 
-            writer.write("Airline \"" + airline_name + "\" contains " + number_of_flights + " flights\n");
-
-//            Collection<Flight> flights = airline.getFlights();
-
+            writer.write("Airline \"" + airline_name + "\" contains " + number_of_flights + " flight");
+            if(number_of_flights > 1) {
+                writer.write("s");
+            }
+            writer.write(".\n");
 
             int counter = 1;
-
             for(Flight flight : flights) {
                 int number = flight.getNumber();
                 String src = flight.getSource();
@@ -66,14 +66,29 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
                 String dest = flight.getDestination();
                 Date arrive = flight.getArrival();
                 long duration = arrive.getTime() - depart.getTime();
+                duration = duration / (1000 * 60);
 
-                writer.write(counter + ") The Flight number is " + Integer.toString(number) + ".\n");
-//                writer.write(Integer.toString(number) + " ");
-                writer.write("The Flight departs from " + this.air_names.getName(src) + " at ");
-                writer.write(depart + "\n");
-                writer.write("The Flight arrives at" + this.air_names.getName(dest) + " at ");
-                writer.write(arrive + "\n");
-                writer.write("The Flight's duration is " + duration);
+                writer.write("\n------------------------------------- " + counter + " -------------------------------------\n");
+                writer.write("The Flight number is " + number + ".\n");
+
+                String airport_name = this.air_names.getName(src);
+                if(airport_name == null) {
+                    airport_name = src;
+                }
+//                writer.write("The Flight departs from " + this.air_names.getName(src) + " at ");
+                writer.write("The Flight departs from " + airport_name + " at ");
+                writer.write(depart + ".\n");
+
+                airport_name = this.air_names.getName(dest);
+                if(airport_name == null) {
+                    airport_name = dest;
+                }
+//                writer.write("The Flight arrives at " + this.air_names.getName(dest) + " at ");
+                writer.write("The Flight arrives at " + airport_name + " at ");
+                writer.write(arrive + ".\n");
+                writer.write("The Flight's duration is " + duration + " minutes.\n");
+
+                ++counter;
             }
 
             writer.flush();

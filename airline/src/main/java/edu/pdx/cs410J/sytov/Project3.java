@@ -180,13 +180,20 @@ public class Project3 {
       try {
         td.dump(airline);
       } catch (Exception e) {
-        System.err.println("Cannot save the airline to the file!");
+        System.err.println("Cannot save the airline to the text file!");
         System.exit(1);
       }
     }
 
     if(pretty_flag) {
       //print pretty file
+      PrettyPrinter pp = new PrettyPrinter(pretty_name);
+      try {
+        pp.dump(airline);
+      } catch (Exception e) {
+        System.err.println("Cannot save the airline to the pretty file!");
+        System.exit(1);
+      }
     }
 
     if(print_flag) {
