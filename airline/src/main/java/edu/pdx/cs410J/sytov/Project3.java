@@ -82,7 +82,7 @@ public class Project3 {
           System.exit(1);
         }
         arg = it.next();
-        if(arg.startsWith("-")) {
+        if(arg.startsWith("-") && arg.length() > 1) {
           System.err.println("-pretty flag is specified but the file name is not provided!");
           System.exit(1);
         }
