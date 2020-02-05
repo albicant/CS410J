@@ -68,6 +68,10 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     return true;
   }
 
+  /**
+   * Converts string into the Date object format
+   * @throws ParseException
+   */
   private void setDateAndTime() throws ParseException {
 
     String pattern = "MM/dd/yyyy hh:mm a";

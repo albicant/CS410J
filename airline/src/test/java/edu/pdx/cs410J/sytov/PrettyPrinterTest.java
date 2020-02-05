@@ -1,6 +1,5 @@
 package edu.pdx.cs410J.sytov;
 
-import edu.pdx.cs410J.ParserException;
 import org.junit.Test;
 
 import java.io.File;

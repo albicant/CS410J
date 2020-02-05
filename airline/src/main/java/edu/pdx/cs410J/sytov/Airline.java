@@ -36,7 +36,12 @@ public class Airline extends AbstractAirline<Flight> {
         return this.name;
     }
 
-    public boolean checkIfCollectionContainsFlights(Flight flight) {
+    /**
+     * Checks if Flight contains the flight
+     * @param flight is an instance of the Flight class
+     * @return true if the flight already exists, false otherwise
+     */
+    private boolean checkIfCollectionContainsFlights(Flight flight) {
         for(Flight fl : this.flights) {
             if(fl.getNumber() == flight.getNumber() && fl.getSource().equals(flight.getSource()) &&
                fl.getDepartureString().equals(flight.getDepartureString()) &&
