@@ -16,7 +16,7 @@ public class TextDumperTest {
 
     @Test
     public void textDumperCanCreateSimpleFile() throws IOException {
-        String file_name = "example1.txt";
+        String file_name = "example1.airline";
         TextDumper dumper = new TextDumper(file_name);
 
         Airline airline = new Airline("Airline 1");

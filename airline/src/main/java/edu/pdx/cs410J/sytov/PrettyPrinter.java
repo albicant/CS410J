@@ -48,8 +48,8 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         try {
             Writer writer = new FileWriter(this.file_name);
             String airline_name = airline.getName();
+
             ArrayList<Flight> flights = new ArrayList<>(airline.getFlights());
-            Collections.sort(flights);
             int number_of_flights = flights.size();
 
             writer.write("Airline \"" + airline_name + "\" contains " + number_of_flights + " flight");
@@ -70,21 +70,10 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
 
                 writer.write("\n------------------------------------- " + counter + " -------------------------------------\n");
                 writer.write("The Flight number is " + number + ".\n");
-
-                String airport_name = this.air_names.getName(src);
-                if(airport_name == null) {
-                    airport_name = src;
-                }
-//                writer.write("The Flight departs from " + this.air_names.getName(src) + " at ");
-                writer.write("The Flight departs from " + airport_name + " at ");
+                writer.write("The Flight departs from " + this.air_names.getName(src) + " at ");
                 writer.write(depart + ".\n");
 
-                airport_name = this.air_names.getName(dest);
-                if(airport_name == null) {
-                    airport_name = dest;
-                }
-//                writer.write("The Flight arrives at " + this.air_names.getName(dest) + " at ");
-                writer.write("The Flight arrives at " + airport_name + " at ");
+                writer.write("The Flight arrives at " + this.air_names.getName(dest) + " at ");
                 writer.write(arrive + ".\n");
                 writer.write("The Flight's duration is " + duration + " minutes.\n");
 

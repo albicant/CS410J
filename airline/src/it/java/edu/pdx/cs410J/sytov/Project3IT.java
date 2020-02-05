@@ -142,7 +142,7 @@ public class Project3IT extends InvokeMainTestCase {
 
     @Test
     public void testAirlineWritesToAFile() {
-        String str = "-textFile test14.txt -print Test14 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
+        String str = "-textFile test14.airline -print Test14 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
@@ -151,7 +151,7 @@ public class Project3IT extends InvokeMainTestCase {
 
     @Test
     public void testTextfileHasExtraArguments() {
-        String str = "-textFile test15.txt -print Test15 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm extra";
+        String str = "-textFile test15.airline -print Test15 123 PDX 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm extra";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
@@ -160,7 +160,7 @@ public class Project3IT extends InvokeMainTestCase {
 
     @Test
     public void testTextfileIsMalformatted() throws IOException {
-        String file_name = "test16.txt";
+        String file_name = "test16.airline";
         File file = new File(file_name);
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
@@ -178,7 +178,7 @@ public class Project3IT extends InvokeMainTestCase {
 
     @Test
     public void testAirlineNameIsDifferentThanTheOneFoundInTheTextFile() throws IOException {
-        String file_name = "test17.txt";
+        String file_name = "test17.airline";
         File file = new File(file_name);
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
@@ -214,10 +214,29 @@ public class Project3IT extends InvokeMainTestCase {
 
     @Test
     public void testAirlineCanBeSavedToPrettyFile() {
-        String str = "-textFile test20.airline -pretty test20.pretty -print Test20 123 AAA 09/03/2020 12:00 am BBB 09/03/2020 4:00 pm";
+        String str = "-textFile test20.airline -pretty test20.pretty -print Test20 123 LED 09/03/2020 12:00 am PDX 09/03/2020 4:00 pm";
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(0));
+        assertThat(result.getTextWrittenToStandardOut(), containsString("Flight 123 departs LED at 9/3/20, 12:00 AM arrives PDX at 9/3/20, 4:00 PM"));
+    }
+
+    @Test
+    public void testFlightsArrivalTimeIsBeforeDepartureTime() {
+        String str = "-textFile test21.airline -pretty test21.pretty -print Test21 123 LED 09/03/2020 12:00 pm PDX 09/03/2020 4:00 am";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Error: The arrival time is earlier than the departure time or they are the same!"));
+    }
+
+    @Test
+    public void testUnknownAirportCode() {
+        String str = "-print Test22 123 AAA 03/03/2020 12:00 am ORD 09/09/2020 4:00 pm";
+        String[] args = str.split(" ");
+        MainMethodResult result = invokeMain(args);
+        assertThat(result.getExitCode(), equalTo(1));
+        assertThat(result.getTextWrittenToStandardError(), containsString("airport does not exist!"));
     }
 
 

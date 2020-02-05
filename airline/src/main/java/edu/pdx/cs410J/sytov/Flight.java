@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.sytov;
 
 import edu.pdx.cs410J.AbstractFlight;
+import edu.pdx.cs410J.AirportNames;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,6 +29,7 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
   private final String dest;
   private final String arrive;
   private Date arrive_date;
+  private AirportNames air_names;
 
   /**
    * Helper function for time validation
@@ -88,6 +90,10 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
       System.err.println("The source has to contain the three-letter code of departure airport!");
       throw new IllegalArgumentException();
     }
+    if(this.air_names.getName(src) == null) {
+      System.err.println("The source airport does not exist!");
+      throw new IllegalArgumentException();
+    }
     this.src = src;
 
     if(!validateTime(depart)) {
@@ -99,6 +105,10 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     dest = dest.toUpperCase();
     if (dest.length() != 3 || !dest.matches("[A-Z]+")) {
       System.err.println("The destination has to contain the three-letter code of departure airport!");
+      throw new IllegalArgumentException();
+    }
+    if(this.air_names.getName(dest) == null) {
+      System.err.println("The destination airport does not exist!");
       throw new IllegalArgumentException();
     }
     this.dest = dest;
@@ -115,6 +125,12 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
       System.err.println("The date and time is in the wrong format! Must be mm/dd/yyyy hh:mm am_pm");
       throw new IllegalArgumentException();
     }
+
+    if(this.arrive_date.getTime() - this.depart_date.getTime() <= 0) {
+      System.err.println("Error: The arrival time is earlier than the departure time or they are the same!");
+      throw new IllegalArgumentException();
+    }
+
   }
 
   /**

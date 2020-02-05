@@ -4,6 +4,7 @@ import edu.pdx.cs410J.AbstractAirline;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 
 /**
@@ -16,7 +17,7 @@ public class Airline extends AbstractAirline<Flight> {
      *  @param flights it the collection of flights represented as the HashSet of Flight class.
      */
     private final String name;
-    private Collection<Flight> flights;
+    private ArrayList<Flight> flights;
 
     /**
      * Class constructor. Creates an instance of the Airline class.
@@ -53,8 +54,10 @@ public class Airline extends AbstractAirline<Flight> {
      */
     @Override
     public void addFlight(Flight flight) {
-        if(!this.checkIfCollectionContainsFlights(flight))
+        if(!this.checkIfCollectionContainsFlights(flight)) {
             this.flights.add(flight);
+            Collections.sort(this.flights);
+        }
     }
 
     /**

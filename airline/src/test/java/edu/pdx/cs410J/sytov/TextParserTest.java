@@ -19,7 +19,7 @@ public class TextParserTest {
 
     @Test
     public void airlineParserReadsFromFile() throws ParserException, IOException {
-        String file_name = "example1.txt";
+        String file_name = "example1.airline";
         File file = new File(file_name);
         if(!file.exists()) {
             Writer writer = new FileWriter(file_name);
