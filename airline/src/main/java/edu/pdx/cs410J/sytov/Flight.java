@@ -6,7 +6,6 @@ import edu.pdx.cs410J.AirportNames;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -18,9 +17,12 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
   /**
    * @param number is the flight number.
    * @param src is the three-letter code of departure airport
-   * @param depart is the Departure date and time (24-hour time) represented as a String
+   * @param depart is the Departure date and time (12-hour time) represented as a String
    * @param dest is the three-letter code of arrival airport
-   * @param arrive is the arrival date and time (24-hour time) represented as a String
+   * @param arrive is the arrival date and time (12-hour time) represented as a String
+   * @param depart_date is the departure date and time represented as the Date object
+   * @param arrive_date is the arrival date and time represented as the Date object
+   * @param air_names is a helper class which contains names of the airports
    */
   private final int number;
   private final String src;
@@ -150,7 +152,7 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
   }
 
   /**
-   * Returns the Departure date and time (24-hour time) represented as a String
+   * Returns the Departure date and time (12-hour format) represented as a String and formatted using DateFormat.SHORT
    */
   @Override
   public String getDepartureString() {
@@ -158,10 +160,16 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     return dateFormat.format(this.depart_date);
   }
 
+  /**
+   * Returns the Departure date and time (12-hour format) represented as a String.
+   */
   public String getDepartureToSave() {
     return this.depart;
   }
 
+  /**
+   * Returns the Arrival date and time (12-hour format) represented as a String.
+   */
   public String getArrivalToSave() {
     return this.arrive;
   }
@@ -175,7 +183,7 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
   }
 
   /**
-   * Returns the arrival date and time (24-hour time) represented as a String
+   * Returns the arrival date and time (12-hour format) represented as a String and formatted using DateFormat.SHORT
    */
   @Override
   public String getArrivalString() {
@@ -183,16 +191,26 @@ public class Flight extends AbstractFlight implements Comparable<Flight> {
     return dateFormat.format(this.arrive_date);
   }
 
+  /**
+   * Returns the departure date and time represented as a Date object
+   */
   @Override
   public Date getDeparture() {
     return this.depart_date;
   }
 
+  /**
+   * Returns the arrival date and time represented as a Date object
+   */
   @Override
   public Date getArrival() {
     return this.arrive_date;
   }
 
+  /**
+   * Compares to flights by the alphabetical order of their code of their source and by their departure time
+   * Returns -1 if this flight is "lesser" than the compared flight, 0 if they are equal and 1 if this flight is "greater" than the compared one.
+   */
   @Override
   public int compareTo(Flight flight) {
     if(this.getSource().equals(flight.getSource())) {

@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -34,7 +32,7 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
     }
 
     /**
-     * Saves airline into the file.
+     * Creates a nicely-formatted textual presentation of an airline's flights.
      * @param airline is an instance of the Airline class to be written to the file
      * @throws IOException
      */

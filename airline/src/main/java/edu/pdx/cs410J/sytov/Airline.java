@@ -5,7 +5,6 @@ import edu.pdx.cs410J.AbstractAirline;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 
 /**
  * Airline class implements AbstractAirline class.
@@ -50,7 +49,7 @@ public class Airline extends AbstractAirline<Flight> {
     }
 
     /**
-     * Adds a new Flight to the collection of Flights
+     * Adds a new Flight to the collection of Flights and sorts them
      */
     @Override
     public void addFlight(Flight flight) {
