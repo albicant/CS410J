@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * The main class for the CS410J airline Project
  */
-public class Project3 {
+public class Project4 {
 
   private static final int number_of_arguments = 10;
 
