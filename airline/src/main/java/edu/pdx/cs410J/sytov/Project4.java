@@ -22,7 +22,7 @@ public class Project4 {
    * Prints the README for the Project.
    */
   public static void printReadMe() {
-    String str1 = "CS410J Winter2020 - Project 3 by Gennadii Sytov\n";
+    String str1 = "CS410J Winter2020 - Project 4 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
     String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
             "Optionally, a file can be specified to upload and save the Airline from/into it.\n" +
@@ -48,6 +48,7 @@ public class Project4 {
     boolean print_flag = false;
     boolean text_file_flag = false;
     boolean pretty_flag = false;
+    boolean xml_flag = false;
     String file_name = null;
     String pretty_name = null;
 
@@ -74,6 +75,21 @@ public class Project4 {
         file_name = arg;
         it.remove();
       }
+      else if(arg.equals("-xmlFile")) {
+        xml_flag = true;
+        it.remove();
+        if(!it.hasNext()) {
+          System.err.println("-xmlFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        arg = it.next();
+        if(arg.startsWith("-")) {
+          System.err.println("-xmlFile flag is specified but the file name is not provided!");
+          System.exit(1);
+        }
+        file_name = arg;
+        it.remove();
+      }
       else if(arg.equals("-pretty")) {
         pretty_flag = true;
         it.remove();
@@ -93,6 +109,11 @@ public class Project4 {
         System.err.println("Unknown option \'" + arg + "\'.");
         System.exit(1);
       }
+    }
+
+    if(xml_flag && text_file_flag) {
+      System.err.println("Error: It is an error to specify both -textFile and -xmlFile!");
+      System.exit(1);
     }
 
     args = arguments.toArray(new String[0]);
@@ -152,7 +173,18 @@ public class Project4 {
         try {
           airline = tp.parse();
         } catch (Exception e) {
-          System.err.println("Cannot create airline from the file");
+          System.err.println("Cannot create airline from the text file");
+          System.exit(1);
+        }
+      }
+    }
+    else if (xml_flag) {
+      XmlParser xp = new XmlParser(file_name);
+      if(xp.checkFileExistence()) {
+        try {
+          airline = xp.parse();
+        } catch (Exception e) {
+          System.err.println("Cannot create airline from the XML file");
           System.exit(1);
         }
       }
@@ -182,6 +214,15 @@ public class Project4 {
         td.dump(airline);
       } catch (Exception e) {
         System.err.println("Cannot save the airline to the text file!");
+        System.exit(1);
+      }
+    }
+    else if(xml_flag) {
+      XmlDumper xd = new XmlDumper(file_name);
+      try {
+        xd.dump(airline);
+      } catch (Exception e) {
+        System.err.println("Cannot save the airline to the XML file!");
         System.exit(1);
       }
     }

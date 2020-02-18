@@ -200,7 +200,7 @@ public class Project4IT extends InvokeMainTestCase {
         String[] args = str.split(" ");
         MainMethodResult result = invokeMain(args);
         assertThat(result.getExitCode(), equalTo(1));
-        assertThat(result.getTextWrittenToStandardError(), containsString("Cannot create airline from the file"));
+        assertThat(result.getTextWrittenToStandardError(), containsString("Cannot create airline from the text file"));
     }
 
     @Test
