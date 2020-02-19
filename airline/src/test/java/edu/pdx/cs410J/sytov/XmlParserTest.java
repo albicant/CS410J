@@ -16,22 +16,27 @@ public class XmlParserTest {
 
     @Test
     public void xmlParserReadsFromFile() throws ParserException, IOException {
-        String file_name = "valid-airline.xml";
-        File file = new File(file_name);
-//        if(!file.exists()) {
-//            Writer writer = new FileWriter(file_name);
-//            writer.write("Airline 1\n");
-//            writer.write("42 PDX 3/15/2017 10:39 am AMS 3/16/2017 9:25 am\n");
-//            writer.write("43 PDX 3/15/2017 10:39 am AMS 3/16/2017 9:25 am\n");
-//            writer.flush();
-//            writer.close();
-//        }
+        String text_file_name = "example2.airline";
+        File text_file = new File(text_file_name);
+        if(!text_file.exists()) {
+            Writer writer = new FileWriter(text_file_name);
+            writer.write("Airline 1\n");
+            writer.write("42 PDX 12/15/2017 12:39 am AMS 12/16/2017 9:25 am\n");
+            writer.write("43 PDX 1/15/2017 12:39 am AMS 1/16/2017 12:25 pm\n");
+            writer.flush();
+            writer.close();
+        }
 
-        XmlParser par = new XmlParser(file_name);
+        String xml_file_name = "example2.xml";
+        TextParser tp = new TextParser(text_file_name);
+        Airline air_save = tp.parse();
+        XmlDumper xd = new XmlDumper(xml_file_name);
+        xd.dump(air_save);
+
+        XmlParser par = new XmlParser(xml_file_name);
         Airline airline = par.parse();
-//        String name = airline.getName();
         Collection<Flight> flights = airline.getFlights();
-        assertThat(airline.getName(), equalTo("Valid Airlines"));
+        assertThat(airline.getName(), equalTo("Airline 1"));
         assertThat(flights.size(), equalTo(2));
     }
 }

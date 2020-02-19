@@ -11,24 +11,22 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
 /**
- * TextDumper class implements AirlineDumper class.
+ * XmlDumper class implements AirlineDumper class.
  */
 public class XmlDumper implements AirlineDumper<Airline> {
 
     /**
      * @param file_name - The name of the provided file.
-     * @param err - an instance of the PrintWriter class, used to check errors.
      */
     private String file_name;
-    private static PrintWriter err;
 
     /**
-     * Constructor, initialises file_name and file variables.
+     * Constructor, initialises the file_name variables.
      * @param name The name of the provided file.
      */
     public XmlDumper(String name) {
@@ -36,20 +34,24 @@ public class XmlDumper implements AirlineDumper<Airline> {
     }
 
     /**
-     * Saves airline into the file.
+     * Saves airline into the XML file.
      * @param airline is an instance of the Airline class to be written to the file
      * @throws IOException
      */
-    public void dump(Airline airline) {
+    public void dump(Airline airline) throws IOException {
         if(airline == null) {
             System.err.println("Airline does not exist. Error saving it into the file!");
-            System.exit(1);
+            throw new IOException();
         }
         Document doc = null;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(true); // later change it to true
+            factory.setValidating(true);
             DocumentBuilder builder = factory.newDocumentBuilder();
+            AirlineXmlHelper helper = new AirlineXmlHelper();
+            builder.setErrorHandler(helper);
+            builder.setEntityResolver(helper);
+
             DOMImplementation dom = builder.getDOMImplementation();
             DocumentType docType = dom.createDocumentType("airline", AirlineXmlHelper.PUBLIC_ID, AirlineXmlHelper.SYSTEM_ID);
             doc = dom.createDocument(null, "airline", docType);
@@ -83,22 +85,19 @@ public class XmlDumper implements AirlineDumper<Airline> {
                 fl_depart.appendChild(fl_depart_time);
 
                 Date depart = flight.getDeparture();
-                SimpleDateFormat formatter = new SimpleDateFormat("dd");
-                String depart_day = formatter.format(depart);
-                formatter.applyPattern("M");
-                String depart_month = formatter.format(depart);
-                formatter.applyPattern("yyyy");
-                String depart_year = formatter.format(depart);
-                formatter.applyPattern("h");
-                String depart_hour = formatter.format(depart);
-                formatter.applyPattern("m");
-                String depart_minute = formatter.format(depart);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(depart);
+                int depart_day = cal.get(Calendar.DAY_OF_MONTH);
+                int depart_month = cal.get(Calendar.MONTH);
+                int depart_year = cal.get(Calendar.YEAR);
+                int depart_hour = cal.get(Calendar.HOUR_OF_DAY);
+                int depart_minute = cal.get(Calendar.MINUTE);
 
-                fl_depart_date.setAttribute("day", depart_day);
-                fl_depart_date.setAttribute("month", depart_month);
-                fl_depart_date.setAttribute("year", depart_year);
-                fl_depart_time.setAttribute("hour", depart_hour);
-                fl_depart_time.setAttribute("minute", depart_minute);
+                fl_depart_date.setAttribute("day", Integer.toString(depart_day));
+                fl_depart_date.setAttribute("month", Integer.toString(depart_month));
+                fl_depart_date.setAttribute("year", Integer.toString(depart_year));
+                fl_depart_time.setAttribute("hour", Integer.toString(depart_hour));
+                fl_depart_time.setAttribute("minute", Integer.toString(depart_minute));
 
                 Element fl_dest = doc.createElement("dest");
                 fl.appendChild(fl_dest);
@@ -113,22 +112,18 @@ public class XmlDumper implements AirlineDumper<Airline> {
                 fl_arrive.appendChild(fl_arrive_time);
 
                 Date arrive = flight.getArrival();
-                formatter.applyPattern("dd");
-                String arrive_day = formatter.format(arrive);
-                formatter.applyPattern("M");
-                String arrive_month = formatter.format(arrive);
-                formatter.applyPattern("yyyy");
-                String arrive_year = formatter.format(arrive);
-                formatter.applyPattern("h");
-                String arrive_hour = formatter.format(arrive);
-                formatter.applyPattern("m");
-                String arrive_minute = formatter.format(arrive);
+                cal.setTime(arrive);
+                int arrive_day = cal.get(Calendar.DAY_OF_MONTH);
+                int arrive_month = cal.get(Calendar.MONTH);
+                int arrive_year = cal.get(Calendar.YEAR);
+                int arrive_hour = cal.get(Calendar.HOUR_OF_DAY);
+                int arrive_minute = cal.get(Calendar.MINUTE);
 
-                fl_arrive_date.setAttribute("day", arrive_day);
-                fl_arrive_date.setAttribute("month", arrive_month);
-                fl_arrive_date.setAttribute("year", arrive_year);
-                fl_arrive_time.setAttribute("hour", arrive_hour);
-                fl_arrive_time.setAttribute("minute", arrive_minute);
+                fl_arrive_date.setAttribute("day", Integer.toString(arrive_day));
+                fl_arrive_date.setAttribute("month", Integer.toString(arrive_month));
+                fl_arrive_date.setAttribute("year", Integer.toString(arrive_year));
+                fl_arrive_time.setAttribute("hour", Integer.toString(arrive_hour));
+                fl_arrive_time.setAttribute("minute", Integer.toString(arrive_minute));
             }
 
 
@@ -143,9 +138,8 @@ public class XmlDumper implements AirlineDumper<Airline> {
             xform.transform(src, res);
 
         } catch (ParserConfigurationException | TransformerException e) {
-//            e.printStackTrace();
             System.err.println("Error: cannot dump the airline into xml file!");
-            System.exit(1);
+            throw new IOException();
         }
 
     }

@@ -18,6 +18,7 @@ public class XmlParser implements AirlineParser<Airline> {
     /**
      * @param file_name The name of the provided file.
      * @param file is the instance of the File class with file_name
+     * @param number_of_arguments is a constant to assert the number of arguments from a string to create a flight
      */
     private final String file_name;
     private final File file;
@@ -40,7 +41,7 @@ public class XmlParser implements AirlineParser<Airline> {
     }
 
     /**
-     * Parses the string and creates an insnance of the Flight class.
+     * Parses the string and creates an instance of the Flight class.
      * @param str contains information to create a flight.
      * @return created flight.
      */
@@ -80,11 +81,14 @@ public class XmlParser implements AirlineParser<Airline> {
         return flight;
     }
 
-
-    private String parseDayTime(Element root) {
+    /**
+     * Parses the XML element and creates an string with date and time in the following format: M/d/yyyy hh:mm a.
+     * @param root contains information an element from XML with date and time.
+     * @return created string.
+     */
+    private String parseDayTime(Element root) throws ParserException {
         String date_time_str = "";
         NodeList entries = root.getChildNodes();
-        //assert length
 
 
         int counter = 0;
@@ -104,17 +108,26 @@ public class XmlParser implements AirlineParser<Airline> {
             switch (e.getNodeName()) {
                 case "date": {
                     if (counter != 0) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing date!");
+                        throw new ParserException("");
                     }
                     counter++;
-                    date = e.getAttribute("month") + "/" + e.getAttribute("day") + "/" + e.getAttribute("year");
+                    String month = "";
+                    try {
+                        month = Integer.toString(Integer.parseInt(e.getAttribute("month")) + 1);
+                    }
+                    catch (Exception ex) {
+                        System.err.println("Error: Cannot convert \'" + month + "\' to type int!");
+                        throw new IllegalArgumentException();
+                    }
+
+                    date = month + "/" + e.getAttribute("day") + "/" + e.getAttribute("year");
                     break;
                 }
                 case "time": {
                     if (counter != 1) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing time!");
+                        throw new ParserException("");
                     }
                     counter++;
                     time = e.getAttribute("hour");
@@ -127,7 +140,11 @@ public class XmlParser implements AirlineParser<Airline> {
                     }
                     if (hour == 0) {
                         hour = 12;
-                    } else if (hour > 12) {
+                    }
+                    else if (hour == 12) {
+                        append = "pm";
+                    }
+                    else if (hour > 12) {
                         hour -= 12;
                         append = "pm";
                     }
@@ -147,7 +164,13 @@ public class XmlParser implements AirlineParser<Airline> {
 
     }
 
-    private Flight parseFlight(Element root) {
+    /**
+     * Parses the XML element and creates an instance of the Flight class.
+     * @param root contains information to create a flight.
+     * @return created flight.
+     * @throws ParserException
+     */
+    private Flight parseFlight(Element root) throws ParserException  {
         NodeList entries = root.getChildNodes();
         String flight_str = "";
 
@@ -165,8 +188,8 @@ public class XmlParser implements AirlineParser<Airline> {
             switch(e.getNodeName()) {
                 case "number": {
                     if (counter != 0) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing flight number!");
+                        throw new ParserException("");
                     }
                     counter++;
                     flight_str += e.getTextContent();// change it to getNodeValue and change to put value in XmLDumper
@@ -174,8 +197,8 @@ public class XmlParser implements AirlineParser<Airline> {
                 }
                 case "src": {
                     if (counter != 1) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing source airport!");
+                        throw new ParserException("");
                     }
                     counter++;
                     flight_str += " " + e.getTextContent();
@@ -183,8 +206,8 @@ public class XmlParser implements AirlineParser<Airline> {
                 }
                 case "depart": {
                     if (counter != 2) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing departure time!");
+                        throw new ParserException("");
                     }
                     counter++;
                     flight_str += " " + this.parseDayTime(e);
@@ -192,8 +215,8 @@ public class XmlParser implements AirlineParser<Airline> {
                 }
                 case "dest": {
                     if (counter != 3) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing destination airport!");
+                        throw new ParserException("");
                     }
                     counter++;
                     flight_str += " " + e.getTextContent();
@@ -201,8 +224,8 @@ public class XmlParser implements AirlineParser<Airline> {
                 }
                 case "arrive": {
                     if (counter != 4) {
-                        // throw exception
-                        System.exit(1);
+                        System.err.println("Error parsing the XML file: missing arrival time!");
+                        throw new ParserException("");
                     }
                     counter++;
                     flight_str += " " + this.parseDayTime(e);
@@ -216,7 +239,13 @@ public class XmlParser implements AirlineParser<Airline> {
         return flight;
     }
 
-    private Airline createAirline(Element root) {
+    /**
+     * Parses the XML element and creates an instance of the Airline class.
+     * @param root contains information to create an airline.
+     * @return created airline.
+     * @throws ParserException
+     */
+    private Airline createAirline(Element root) throws ParserException {
         String airline_name = "";
         NodeList entries = root.getChildNodes();
         Node a_name = entries.item(1);
@@ -226,7 +255,7 @@ public class XmlParser implements AirlineParser<Airline> {
             airline_name = entry_name.getTextContent();
         } else {
             System.err.println("Cannot create an airline from the xml file: missing airline name!");
-            System.exit(1); // change it for exceptions
+            throw new ParserException("");
         }
         Airline airline = new Airline(airline_name);
         for(int i = 2; i < entries.getLength(); ++i) {
@@ -241,7 +270,7 @@ public class XmlParser implements AirlineParser<Airline> {
             }
             else {
                 System.err.println("Unknown entry!");
-                System.exit(1); // change it for exception
+                throw new ParserException("");
             }
 
         }
@@ -249,7 +278,7 @@ public class XmlParser implements AirlineParser<Airline> {
     }
 
     /**
-     * Reads from the file and creates an instance of the Airline class.
+     * Reads from the XML file and creates an instance of the Airline class.
      * @return an instance of the Airline class
      * @throws ParserException
      */
@@ -261,18 +290,22 @@ public class XmlParser implements AirlineParser<Airline> {
             factory.setValidating(true);
 
             DocumentBuilder builder = factory.newDocumentBuilder();
+            AirlineXmlHelper helper = new AirlineXmlHelper();
+            builder.setErrorHandler(helper);
+            builder.setEntityResolver(helper);
+
             doc = builder.parse(this.file);
 
 
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: cannot create an airline from the xml file!");
+            throw new ParserException("");
         }
 
         Element root = (Element) doc.getChildNodes().item(1);
         Airline airline = this.createAirline(root);
 
         return airline;
-
     }
 }

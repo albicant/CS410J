@@ -25,9 +25,10 @@ public class Project4 {
     String str1 = "CS410J Winter2020 - Project 4 by Gennadii Sytov\n";
     String str2 = "This project parses the command line arguments to create an Airline class\n";
     String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
-            "Optionally, a file can be specified to upload and save the Airline from/into it.\n" +
+            "Optionally, a text file  or an XML file can be specified to upload and save the Airline from/into it.\n" +
             "In addition to it, another file can be specified to save the Airline in a nicely-formatted textual presentation of an airline's flights.\n" +
-            "The program has \"-print\", \"-textFile\" followed by the file name, \"-pretty\" followed by the file name and \"-README\" options.";
+            "The program has \"-print\", \"-textFile\" followed by the file name, \"-xmlFile\" followed by the file name, \n" +
+            "\"-pretty\" followed by the file name and \"-README\" options. It is an error to specify both \"-textFile\" and \"-xmlFile\".";
     System.out.println(str1+str2+str3);
   }
 
