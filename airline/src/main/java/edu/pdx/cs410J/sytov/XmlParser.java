@@ -46,7 +46,6 @@ public class XmlParser implements AirlineParser<Airline> {
      * @return created flight.
      */
     private Flight createFlight(String str) {
-        System.out.println(str);
         String[] args = str.split(" ");
 
         if(args.length < number_of_arguments) {
@@ -303,8 +302,23 @@ public class XmlParser implements AirlineParser<Airline> {
             throw new ParserException("");
         }
 
-        Element root = (Element) doc.getChildNodes().item(1);
-        Airline airline = this.createAirline(root);
+        NodeList entries = doc.getChildNodes();
+        Airline airline = null;
+        for(int i = 1; i < entries.getLength(); ++i) {
+            Node n_fl = entries.item(i);
+            if (!(n_fl instanceof Element)) {
+                continue;
+            }
+            Element e_fl = (Element) n_fl;
+            if (e_fl.getNodeName() == "airline") {
+                airline = this.createAirline(e_fl);
+            }
+            else {
+                System.err.println("Unknown entry!");
+                throw new ParserException("");
+            }
+
+        }
 
         return airline;
     }
