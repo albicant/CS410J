@@ -312,6 +312,7 @@ public class XmlParser implements AirlineParser<Airline> {
             Element e_fl = (Element) n_fl;
             if (e_fl.getNodeName() == "airline") {
                 airline = this.createAirline(e_fl);
+                break;
             }
             else {
                 System.err.println("Unknown entry!");
