@@ -7,9 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -35,16 +36,48 @@ public class AirlineServletTest {
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
 
+//  @Test
+//  public void addOneWordToDictionary() throws ServletException, IOException {
+//    AirlineServlet servlet = new AirlineServlet();
+//
+//    String word = "TEST WORD";
+//    String definition = "TEST DEFINITION";
+//
+//    HttpServletRequest request = mock(HttpServletRequest.class);
+//    when(request.getParameter("word")).thenReturn(word);
+//    when(request.getParameter("definition")).thenReturn(definition);
+//
+//    HttpServletResponse response = mock(HttpServletResponse.class);
+//    PrintWriter pw = mock(PrintWriter.class);
+//
+//    when(response.getWriter()).thenReturn(pw);
+//
+//    servlet.doPost(request, response);
+//    verify(pw).println(Messages.definedWordAs(word, definition));
+//    verify(response).setStatus(HttpServletResponse.SC_OK);
+//
+//    assertThat(servlet.getDefinition(word), equalTo(definition));
+//  }
+
   @Test
-  public void addOneWordToDictionary() throws ServletException, IOException {
+  public void addingFlightToServletStoresAirlineWithFlight() throws ServletException, IOException {
     AirlineServlet servlet = new AirlineServlet();
 
-    String word = "TEST WORD";
-    String definition = "TEST DEFINITION";
+    String airlineName = "TEST AIRLINE";
+    int flightNumber = 123;
+    String src = "AMS";
+    String depart = "3/1/2020 1:00 pm";
+    String dest = "PDX";
+    String arrive = "3/1/2020 10:20 pm";
 
     HttpServletRequest request = mock(HttpServletRequest.class);
-    when(request.getParameter("word")).thenReturn(word);
-    when(request.getParameter("definition")).thenReturn(definition);
+    when(request.getParameter("airline")).thenReturn(airlineName);
+    when(request.getParameter("flightNumber")).thenReturn(String.valueOf(flightNumber));
+    when(request.getParameter("src")).thenReturn(src);
+    when(request.getParameter("depart")).thenReturn(depart);
+    when(request.getParameter("dest")).thenReturn(dest);
+    when(request.getParameter("arrive")).thenReturn(arrive);
+
 
     HttpServletResponse response = mock(HttpServletResponse.class);
     PrintWriter pw = mock(PrintWriter.class);
@@ -52,9 +85,12 @@ public class AirlineServletTest {
     when(response.getWriter()).thenReturn(pw);
 
     servlet.doPost(request, response);
-    verify(pw).println(Messages.definedWordAs(word, definition));
-    verify(response).setStatus(HttpServletResponse.SC_OK);
 
-    assertThat(servlet.getDefinition(word), equalTo(definition));
+    Airline airline = servlet.getAirline(airlineName);
+    assertThat(airline, not(nullValue()));
+
+    Flight flight = airline.getFlights().iterator().next();
+    assertThat(flight.getNumber(), equalTo(flightNumber));
   }
+
 }
