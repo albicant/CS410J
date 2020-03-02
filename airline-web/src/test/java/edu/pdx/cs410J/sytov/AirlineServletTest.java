@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.sytov;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,7 +62,7 @@ public class AirlineServletTest {
 
   @Test
   public void addingFlightToServletStoresAirlineWithFlight() throws ServletException, IOException {
-    AirlineServlet servlet = new AirlineServlet();
+
 
     String airlineName = "TEST AIRLINE";
     int flightNumber = 123;
@@ -69,7 +70,19 @@ public class AirlineServletTest {
     String depart = "3/1/2020 1:00 pm";
     String dest = "PDX";
     String arrive = "3/1/2020 10:20 pm";
+    PrintWriter pw = mock(PrintWriter.class);
 
+    AirlineServlet servlet = createFlight(airlineName, flightNumber, src, depart, dest, arrive);
+
+    Airline airline = servlet.getAirline(airlineName);
+    assertThat(airline, not(nullValue()));
+
+    Flight flight = airline.getFlights().iterator().next();
+    assertThat(flight.getNumber(), equalTo(flightNumber));
+  }
+
+  private AirlineServlet createFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException, ServletException {
+    AirlineServlet servlet = new AirlineServlet();
     HttpServletRequest request = mock(HttpServletRequest.class);
     when(request.getParameter("airline")).thenReturn(airlineName);
     when(request.getParameter("flightNumber")).thenReturn(String.valueOf(flightNumber));
@@ -78,19 +91,44 @@ public class AirlineServletTest {
     when(request.getParameter("dest")).thenReturn(dest);
     when(request.getParameter("arrive")).thenReturn(arrive);
 
-
     HttpServletResponse response = mock(HttpServletResponse.class);
+
     PrintWriter pw = mock(PrintWriter.class);
-
     when(response.getWriter()).thenReturn(pw);
-
     servlet.doPost(request, response);
 
-    Airline airline = servlet.getAirline(airlineName);
-    assertThat(airline, not(nullValue()));
+    return servlet;
+  }
 
-    Flight flight = airline.getFlights().iterator().next();
-    assertThat(flight.getNumber(), equalTo(flightNumber));
+  @Test
+  public void getAirlineAsXml() throws ServletException, IOException {
+    String airlineName = "TEST AIRLINE";
+    int flightNumber = 123;
+    String src = "AMS";
+    String depart = "3/1/2020 1:00 pm";
+    String dest = "PDX";
+    String arrive = "3/1/2020 10:20 pm";
+
+    AirlineServlet servlet = createFlight(airlineName, flightNumber, src, depart, dest, arrive);
+
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    when(request.getParameter("airline")).thenReturn(airlineName);
+
+    HttpServletResponse response = mock(HttpServletResponse.class);
+
+    ArgumentCaptor<String> textWrittenToWriter = ArgumentCaptor.forClass(String.class);
+    PrintWriter pw = mock(PrintWriter.class);
+    when(response.getWriter()).thenReturn(pw);
+
+    servlet.doGet(request, response);
+
+//    verify(pw).println(textWrittenToWriter.capture());
+    verify(pw).println(textWrittenToWriter.capture());
+    String xml = textWrittenToWriter.getValue();
+    System.out.println(xml);
+    assertThat(xml, containsString(airlineName));
+    assertThat(xml, containsString(String.valueOf(flightNumber)));
+
   }
 
 }

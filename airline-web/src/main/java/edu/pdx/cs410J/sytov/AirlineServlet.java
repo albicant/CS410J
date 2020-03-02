@@ -38,7 +38,16 @@ public class AirlineServlet extends HttpServlet {
   {
       response.setContentType( "text/plain" );
 
-      String word = getParameter( AIRLINE_NAME_PARAMETER, request );
+      String airlineName = getParameter( AIRLINE_NAME_PARAMETER, request );
+      // here I will use my XML dumper
+      Airline airline = getAirline(airlineName);
+      // check if the airline is null and write a unit test for it
+
+      XmlDumper dumper = new XmlDumper(response.getWriter());
+      dumper.dump(airline);
+
+
+//      response.getWriter().println("Hello");
 //      if (word != null) {
 //          writeDefinition(word, response);
 //
@@ -203,13 +212,8 @@ public class AirlineServlet extends HttpServlet {
     }
   }
 
-//  @VisibleForTesting
-//  String getDefinition(String word) {
-//      return this.dictionary.get(word);
-//  }
-
-  public Airline getAirline(String airlineName){
-//      return null;
+    @VisibleForTesting
+    Airline getAirline(String airlineName){
       return this.airlines.get(airlineName);
-  }
+    }
 }

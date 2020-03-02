@@ -49,10 +49,10 @@ public class AirlineRestClient extends HttpRequestHelper
     return Messages.parseDictionaryEntry(content).getValue();
   }
 
-  public void addDictionaryEntry(String word, String definition) throws IOException {
-    Response response = postToMyURL(Map.of("word", word, "definition", definition));
-    throwExceptionIfNotOkayHttpStatus(response);
-  }
+//  public void addDictionaryEntry(String word, String definition) throws IOException {
+//    Response response = postToMyURL(Map.of("word", word, "definition", definition));
+//    throwExceptionIfNotOkayHttpStatus(response);
+//  }
 
   @VisibleForTesting
   Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
@@ -70,6 +70,11 @@ public class AirlineRestClient extends HttpRequestHelper
       throw new AirlineRestException(code);
     }
     return response;
+  }
+
+  public void addFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException {
+    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber)));
+    throwExceptionIfNotOkayHttpStatus(response);
   }
 
   @VisibleForTesting

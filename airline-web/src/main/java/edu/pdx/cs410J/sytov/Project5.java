@@ -71,7 +71,8 @@ public class Project5 {
 
             } else {
                 // Post the word/definition pair
-                client.addDictionaryEntry(word, definition);
+                client.addFlight("Test Airline", 42, "AMS", "01/01/2020 1:00 am", "PDX", "01/02/2020 3:30 pm");
+//                client.addDictionaryEntry(word, definition);
                 message = Messages.definedWordAs(word, definition);
             }
 

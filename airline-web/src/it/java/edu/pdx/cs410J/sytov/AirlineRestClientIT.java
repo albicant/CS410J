@@ -39,16 +39,32 @@ public class AirlineRestClientIT {
     assertThat(dictionary.size(), equalTo(0));
   }
 
-  @Test
-  public void test2DefineOneWord() throws IOException {
-    AirlineRestClient client = newAirlineRestClient();
-    String testWord = "TEST WORD";
-    String testDefinition = "TEST DEFINITION";
-    client.addDictionaryEntry(testWord, testDefinition);
+//  @Test
+//  public void test2AddOneFlight() throws IOException {
+//    AirlineRestClient client = newAirlineRestClient();
+//    String airlineName = "TEST AIRLINE";
+//    int flightNumber = 123;
+//    String src = "AMS";
+//    String depart = "3/1/2020 1:00 pm";
+//    String dest = "PDX";
+//    String arrive = "3/1/2020 10:20 pm";
+//
+//    client.addFlight(airlineName, flightNumber, src, depart, dest, arrive);
+//
+//    String definition = client.getDefinition(testWord);
+//    assertThat(definition, equalTo(testDefinition));
+//  }
 
-    String definition = client.getDefinition(testWord);
-    assertThat(definition, equalTo(testDefinition));
-  }
+//  @Test
+//  public void test2DefineOneWord() throws IOException {
+//    AirlineRestClient client = newAirlineRestClient();
+//    String testWord = "TEST WORD";
+//    String testDefinition = "TEST DEFINITION";
+//    client.addDictionaryEntry(testWord, testDefinition);
+//
+//    String definition = client.getDefinition(testWord);
+//    assertThat(definition, equalTo(testDefinition));
+//  }
 
   @Test
   public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
