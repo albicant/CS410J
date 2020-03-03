@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.sytov;
 
+import edu.pdx.cs410J.ParserException;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -79,7 +80,7 @@ public class AirlineServletTest {
   }
 
   @Test
-  public void getAirlineAsXml() throws ServletException, IOException {
+  public void getAirlineAsXml() throws ServletException, IOException, ParserException {
     String airlineName = "TEST AIRLINE";
     int flightNumber = 123;
     String src = "AMS";
@@ -93,8 +94,6 @@ public class AirlineServletTest {
     when(request.getParameter("airline")).thenReturn(airlineName);
 
     HttpServletResponse response = mock(HttpServletResponse.class);
-
-    ArgumentCaptor<String> textWrittenToWriter = ArgumentCaptor.forClass(String.class);
 
     StringWriter sw = new StringWriter();
     PrintWriter pw = new PrintWriter(sw);

@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -13,6 +14,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 
 /**
  * XmlParser class implements AirlineParser class.
@@ -24,25 +26,17 @@ public class XmlParser implements AirlineParser<Airline> {
      * @param file is the instance of the File class with file_name
      * @param number_of_arguments is a constant to assert the number of arguments from a string to create a flight
      */
-    private final String file_name;
-    private final File file;
+    private final String xml;
     private final int number_of_arguments = 9;
 
     /**
      * Constructor, initialises file_name and file variables.
-     * @param file_name The name of the provided file.
+     * @param xml xml string
      */
-    public XmlParser(String file_name) {
-        this.file_name = file_name;
-        this.file = new File(file_name);
+    public XmlParser(String xml) {
+        this.xml = xml;
     }
 
-    /**
-     * Helper function to check whether the file already exists or not.
-     */
-    public boolean checkFileExistence() {
-        return this.file.exists();
-    }
 
     /**
      * Parses the string and creates an instance of the Flight class.
@@ -297,12 +291,13 @@ public class XmlParser implements AirlineParser<Airline> {
             builder.setErrorHandler(helper);
             builder.setEntityResolver(helper);
 
-            doc = builder.parse(this.file);
+            InputSource is = new InputSource(new StringReader(this.xml));
+            doc = builder.parse(is);
 
 
 
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            System.err.println("Error: cannot create an airline from the xml file!");
+            System.err.println("Error: cannot create an airline from the xml!");
             throw new ParserException("");
         }
 

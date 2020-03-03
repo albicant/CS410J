@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,24 +40,63 @@ public class AirlineServlet extends HttpServlet {
       response.setContentType( "text/plain" );
 
       String airlineName = getParameter( AIRLINE_NAME_PARAMETER, request );
-      // here I will use my XML dumper
-      Airline airline = getAirline(airlineName);
-      // check if the airline is null and write a unit test for it
+      String src = getParameter(SRC_PARAMETER, request);
+      String dest = getParameter(DEST_PARAMETER, request);
+      PrintWriter pw = response.getWriter();
+      Airline airline = null;
 
-      XmlDumper dumper = new XmlDumper(response.getWriter());
+      if (airlineName == null) {
+          missingRequiredParameter(response, AIRLINE_NAME_PARAMETER);
+          return;
+      }
+      else if (src == null && dest == null) {
+          airline = getAirline(airlineName);
+
+      }
+      else if (src == null && dest != null) {
+          missingRequiredParameter(response, SRC_PARAMETER);
+          return;
+      }
+      else if (src != null && dest == null) {
+          missingRequiredParameter(response, DEST_PARAMETER);
+          return;
+      }
+      else {
+          airline = getAirlineFlights(airlineName, src, dest);
+      }
+
+      if(airline == null) {
+          missingRequiredParameter(response, "Airline with name \'" + airlineName + "\' does not exist!");
+          return;
+      }
+
+      XmlDumper dumper = new XmlDumper(pw);
       dumper.dump(airline);
 
-
-//      response.getWriter().println("Hello");
-//      if (word != null) {
-//          writeDefinition(word, response);
-//
-//      } else {
-//          writeAllDictionaryEntries(response);
-//      }
+      pw.flush();
+      response.setStatus( HttpServletResponse.SC_OK);
   }
 
-  /**
+
+    private Airline getAirlineFlights(String airlineName, String src, String dest) {
+        Airline airline = getAirline(airlineName);
+        if (airline == null) {
+            return null;
+        }
+
+        Airline newAirline = new Airline(airlineName);
+        Collection<Flight> flights = airline.getFlights();
+
+        for (Flight flight : flights) {
+            if (flight.getSource() == src && flight.getDestination() == dest) {
+                newAirline.addFlight(flight);
+            }
+        }
+
+        return newAirline;
+    }
+
+    /**
    * Handles an HTTP POST request by storing the dictionary entry for the
    * "word" and "definition" request parameters.  It writes the dictionary
    * entry to the HTTP response.

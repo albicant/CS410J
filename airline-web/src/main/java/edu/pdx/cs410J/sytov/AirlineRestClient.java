@@ -56,6 +56,13 @@ public class AirlineRestClient extends HttpRequestHelper
     return xml;
   }
 
+  public String searchFlights(String airline_name, String src, String dest) throws IOException {
+    Response response = get(this.url, Map.of("airline", airline_name, "src", src, "dest", dest));
+    throwExceptionIfNotOkayHttpStatus(response);
+    String xml = response.getContent();
+    return xml;
+  }
+
 //  public void addDictionaryEntry(String word, String definition) throws IOException {
 //    Response response = postToMyURL(Map.of("word", word, "definition", definition));
 //    throwExceptionIfNotOkayHttpStatus(response);
