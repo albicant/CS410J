@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,29 +37,6 @@ public class AirlineServletTest {
     verify(pw).println(Messages.formatWordCount(expectedWords));
     verify(response).setStatus(HttpServletResponse.SC_OK);
   }
-
-//  @Test
-//  public void addOneWordToDictionary() throws ServletException, IOException {
-//    AirlineServlet servlet = new AirlineServlet();
-//
-//    String word = "TEST WORD";
-//    String definition = "TEST DEFINITION";
-//
-//    HttpServletRequest request = mock(HttpServletRequest.class);
-//    when(request.getParameter("word")).thenReturn(word);
-//    when(request.getParameter("definition")).thenReturn(definition);
-//
-//    HttpServletResponse response = mock(HttpServletResponse.class);
-//    PrintWriter pw = mock(PrintWriter.class);
-//
-//    when(response.getWriter()).thenReturn(pw);
-//
-//    servlet.doPost(request, response);
-//    verify(pw).println(Messages.definedWordAs(word, definition));
-//    verify(response).setStatus(HttpServletResponse.SC_OK);
-//
-//    assertThat(servlet.getDefinition(word), equalTo(definition));
-//  }
 
   @Test
   public void addingFlightToServletStoresAirlineWithFlight() throws ServletException, IOException {
@@ -117,18 +95,16 @@ public class AirlineServletTest {
     HttpServletResponse response = mock(HttpServletResponse.class);
 
     ArgumentCaptor<String> textWrittenToWriter = ArgumentCaptor.forClass(String.class);
-    PrintWriter pw = mock(PrintWriter.class);
+
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
     when(response.getWriter()).thenReturn(pw);
 
     servlet.doGet(request, response);
 
-//    verify(pw).println(textWrittenToWriter.capture());
-    verify(pw).println(textWrittenToWriter.capture());
-    String xml = textWrittenToWriter.getValue();
-    System.out.println(xml);
+    String xml = sw.toString();
     assertThat(xml, containsString(airlineName));
     assertThat(xml, containsString(String.valueOf(flightNumber)));
-
   }
 
 }

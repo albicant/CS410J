@@ -67,7 +67,7 @@ public class Project5 {
 
             } else if (definition == null) {
                 // Print all dictionary entries
-                message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
+                message = Messages.formatDictionaryEntry(word, client.getAirlineAsXml(word));
 
             } else {
                 // Post the word/definition pair

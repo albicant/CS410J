@@ -39,14 +39,21 @@ public class AirlineRestClient extends HttpRequestHelper
     return Messages.parseDictionary(response.getContent());
   }
 
-  /**
-   * Returns the definition for the given word
-   */
-  public String getDefinition(String word) throws IOException {
-    Response response = get(this.url, Map.of("word", word));
+//  /**
+//   * Returns the definition for the given word
+//   */
+//  public String getDefinition(String word) throws IOException {
+//    Response response = get(this.url, Map.of("word", word));
+//    throwExceptionIfNotOkayHttpStatus(response);
+//    String content = response.getContent();
+//    return Messages.parseDictionaryEntry(content).getValue();
+//  }
+
+  public String getAirlineAsXml(String word) throws IOException {
+    Response response = get(this.url, Map.of("airline", word));
     throwExceptionIfNotOkayHttpStatus(response);
-    String content = response.getContent();
-    return Messages.parseDictionaryEntry(content).getValue();
+    String xml = response.getContent();
+    return xml;
   }
 
 //  public void addDictionaryEntry(String word, String definition) throws IOException {
@@ -73,9 +80,12 @@ public class AirlineRestClient extends HttpRequestHelper
   }
 
   public void addFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException {
-    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber)));
+//    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber)));
+    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber),
+            "src", src, "depart", depart, "dest", dest, "arrive", arrive));
     throwExceptionIfNotOkayHttpStatus(response);
   }
+
 
   @VisibleForTesting
   class AirlineRestException extends RuntimeException {
