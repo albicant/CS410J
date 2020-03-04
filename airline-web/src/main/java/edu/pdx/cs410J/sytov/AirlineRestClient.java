@@ -9,9 +9,7 @@ import java.util.Map;
 import static java.net.HttpURLConnection.HTTP_OK;
 
 /**
- * A helper class for accessing the rest client.  Note that this class provides
- * an example of how to make gets and posts to a URL.  You'll need to change it
- * to do something other than just send dictionary entries.
+ * A helper class for accessing the rest client.
  */
 public class AirlineRestClient extends HttpRequestHelper
 {
@@ -60,6 +58,7 @@ public class AirlineRestClient extends HttpRequestHelper
       return xml;
     }
 
+
     @VisibleForTesting
     Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
       return post(this.url, dictionaryEntries);
@@ -78,6 +77,16 @@ public class AirlineRestClient extends HttpRequestHelper
       return response;
     }
 
+    /**
+     * Sends POST request to the server to creat and add a Flight to the Airline
+     * @param airlineName The name of the airline
+     * @param flightNumber The flight number
+     * @param src The source airport
+     * @param depart Departure date and time
+     * @param dest The destination airport
+     * @param arrive Arrival date and time
+     * @throws IOException
+     */
     public void addFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException {
       Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber),
               "src", src, "depart", depart, "dest", dest, "arrive", arrive));
@@ -85,6 +94,9 @@ public class AirlineRestClient extends HttpRequestHelper
     }
 
 
+    /**
+     * Helper function to handle Rest Exception
+     */
     @VisibleForTesting
     class AirlineRestException extends RuntimeException {
       AirlineRestException(int httpStatusCode) {

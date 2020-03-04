@@ -17,18 +17,24 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
 
     /**
      * @param err - an instance of the PrintWriter class, used to check errors.
+     * @param air_names - a helper class that contains information about valid airports
+     * @param pw - an instance of the PrintWriter class
      */
     private static PrintWriter err;
     private AirportNames air_names;
     private final PrintWriter pw;
 
+    /**
+     * Constructor for the PrettyPrinter class
+     * @param pw an instance of the PrintWriter class
+     */
     public PrettyPrinter(PrintWriter pw) {
         this.pw = pw;
     }
 
 
     /**
-     * Creates a nicely-formatted textual presentation of an airline's flights or prints it to the standard output.
+     * Creates a nicely-formatted textual presentation of an airline's flights and saves it to the PrintWriter.
      * @param airline is an instance of the Airline class to be written to the file
      * @throws IOException
      */

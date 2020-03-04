@@ -14,9 +14,7 @@ import java.util.Map;
 
 /**
  * This servlet ultimately provides a REST API for working with an
- * <code>Airline</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple dictionary of words
- * and their definitions.
+ * <code>Airline</code>.
  */
 public class AirlineServlet extends HttpServlet {
   static final String AIRLINE_NAME_PARAMETER = "airline";
@@ -74,7 +72,13 @@ public class AirlineServlet extends HttpServlet {
       response.setStatus( HttpServletResponse.SC_OK);
   }
 
-
+    /**
+     * Searches for the airline which has flights that originate at the source airport and end at the destination airport.
+     * @param airlineName The name of the airline
+     * @param src The source airport
+     * @param dest The destination airport
+     * @return
+     */
     private Airline getAirlineFlights(String airlineName, String src, String dest) {
         Airline airline = getAirline(airlineName);
         if (airline == null) {
@@ -94,9 +98,7 @@ public class AirlineServlet extends HttpServlet {
     }
 
     /**
-   * Handles an HTTP POST request by storing the dictionary entry for the
-   * "word" and "definition" request parameters.  It writes the dictionary
-   * entry to the HTTP response.
+   * Handles an HTTP POST request
    */
   @Override
   protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
@@ -163,6 +165,11 @@ public class AirlineServlet extends HttpServlet {
       }
   }
 
+    /**
+     * If airline with the name does not exist, creates new airline and adds it to the airlines map.
+     * @param airlineName The name of the airline
+     * @return
+     */
     private Airline getOrCreateAirline(String airlineName) {
         Airline airline = getAirline(airlineName);
         if (airline == null) {
@@ -221,6 +228,11 @@ public class AirlineServlet extends HttpServlet {
     }
   }
 
+    /**
+     * Returns the airline object from the airlines map
+     * @param airlineName The name of the airline
+     * @return
+     */
     @VisibleForTesting
     Airline getAirline(String airlineName){
       return this.airlines.get(airlineName);

@@ -26,13 +26,17 @@ public class XmlDumper implements AirlineDumper<Airline> {
 
     private final PrintWriter pw;
 
+    /**
+     * Constructor for the XmlDumper class
+     * @param pw an instance of the PrintWriter class
+     */
     public XmlDumper(PrintWriter pw) {
         this.pw = pw;
     }
 
 
     /**
-     * Saves airline into the XML file.
+     * Saves airline into the XML string and writes to the writer.
      * @param airline is an instance of the Airline class to be written to the file
      * @throws IOException
      */
@@ -125,7 +129,6 @@ public class XmlDumper implements AirlineDumper<Airline> {
             }
 
 
-            //Write the XML document to the file
             Source src = new DOMSource(doc);
             Result res = new StreamResult(this.pw);
 

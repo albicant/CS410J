@@ -22,8 +22,7 @@ import java.io.StringReader;
 public class XmlParser implements AirlineParser<Airline> {
 
     /**
-     * @param file_name The name of the provided file.
-     * @param file is the instance of the File class with file_name
+     * @param xml The xml string that contains the information about the airline.
      * @param number_of_arguments is a constant to assert the number of arguments from a string to create a flight
      */
     private final String xml;
@@ -275,7 +274,7 @@ public class XmlParser implements AirlineParser<Airline> {
     }
 
     /**
-     * Reads from the XML file and creates an instance of the Airline class.
+     * Reads from the XML string and creates an instance of the Airline class.
      * @return an instance of the Airline class
      * @throws ParserException
      */
