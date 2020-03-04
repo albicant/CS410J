@@ -20,6 +20,11 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
      */
     private static PrintWriter err;
     private AirportNames air_names;
+    private final PrintWriter pw;
+
+    public PrettyPrinter(PrintWriter pw) {
+        this.pw = pw;
+    }
 
 
     /**
@@ -40,11 +45,11 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
         ArrayList<Flight> flights = new ArrayList<>(airline.getFlights());
         int number_of_flights = flights.size();
 
-        System.out.print("Airline \"" + airline_name + "\" contains " + number_of_flights + " flight");
+        this.pw.print("Airline \"" + airline_name + "\" contains " + number_of_flights + " flight");
         if(number_of_flights > 1) {
-            System.out.print("s");
+            this.pw.print("s");
         }
-        System.out.print(".\n");
+        this.pw.print(".\n");
 
         int counter = 1;
         for(Flight flight : flights) {
@@ -57,14 +62,14 @@ public class PrettyPrinter implements AirlineDumper<Airline> {
             long duration = arrive.getTime() - depart.getTime();
             duration = duration / (1000 * 60);
 
-            System.out.print("\n------------------------------------- " + counter + " -------------------------------------\n");
-            System.out.print("The Flight number is " + number + ".\n");
-            System.out.print("The Flight departs from " + this.air_names.getName(src) + " on ");
-            System.out.print(depart + ".\n");
+            this.pw.print("\n------------------------------------- " + counter + " -------------------------------------\n");
+            this.pw.print("The Flight number is " + number + ".\n");
+            this.pw.print("The Flight departs from " + this.air_names.getName(src) + " on ");
+            this.pw.print(depart + ".\n");
 
-            System.out.print("The Flight arrives at " + this.air_names.getName(dest) + " on ");
-            System.out.print(arrive + ".\n");
-            System.out.print("The Flight's duration is " + duration + " minutes.\n");
+            this.pw.print("The Flight arrives at " + this.air_names.getName(dest) + " on ");
+            this.pw.print(arrive + ".\n");
+            this.pw.print("The Flight's duration is " + duration + " minutes.\n");
 
             ++counter;
         }

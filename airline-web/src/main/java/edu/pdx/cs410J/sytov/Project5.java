@@ -52,8 +52,6 @@ public class Project5 {
 
         String hostName = null;
         String portString = null;
-//        String word = null;
-//        String definition = null;
         boolean print_flag = false;
         boolean search_flag = false;
 
@@ -107,6 +105,7 @@ public class Project5 {
             }
         }
 
+
         if (hostName == null) {
             usage( MISSING_ARGS );
 
@@ -119,12 +118,9 @@ public class Project5 {
             System.exit(1);
         }
 
-        if(search_flag) {
-            number_of_arguments = 3;
-        }
 
         args = arguments.toArray(new String[0]);
-        if (args.length < number_of_arguments) {
+        if (args.length < 1) {
             System.err.println("Missing command line arguments.");
             System.exit(1);
         }
@@ -146,6 +142,13 @@ public class Project5 {
             airline_name = args[0];
         }
 
+        if(search_flag) {
+            number_of_arguments = 3;
+        }
+        else if (args.length == index) {
+            number_of_arguments = 1;
+        }
+
         if(args.length < index + (number_of_arguments - 1)) {
             System.err.println("Missing command line arguments.");
             System.exit(1);
@@ -154,29 +157,6 @@ public class Project5 {
             System.err.println("Unknown command line arguments.");
             System.exit(1);
         }
-
-
-
-
-
-//        for (String arg : args) {
-//            if (hostName == null) {
-//                hostName = arg;
-//
-//            } else if ( portString == null) {
-//                portString = arg;
-//
-//            } else if (word == null) {
-//                word = arg;
-//
-//            } else if (definition == null) {
-//                definition = arg;
-//
-//            } else {
-//                usage("Extraneous command line argument: " + arg);
-//            }
-//        }
-
 
 
         int port;
@@ -199,7 +179,7 @@ public class Project5 {
             src = args[index];
             dest = args[index + 1];
         }
-        else {
+        else if (number_of_arguments > 1) {
             try {
                 number = Integer.parseInt(args[index]);
             } catch (Exception e) {
@@ -214,10 +194,30 @@ public class Project5 {
         }
 
 
-//        String message;
         try {
             if (search_flag) {
-                String xml = client.searchFlights(airline_name, src, dest);
+                String xml = null;
+                try {
+                    xml = client.searchFlights(airline_name, src, dest);
+                } catch (AirlineRestClient.AirlineRestException e) {
+                    System.err.println("Error: such airline doesn't exist!");
+                    System.exit(1);
+                }
+                try {
+                    prettyPrint(xml);
+                } catch (Exception e) {
+                    System.err.println("Cannot pretty print the airline!");
+                    System.exit(1);
+                }
+            }
+            else if (number_of_arguments == 1) {
+                String xml = null;
+                try {
+                    xml = client.getAirlineAsXml(airline_name);
+                } catch (AirlineRestClient.AirlineRestException e) {
+                    System.err.println("Error: such airline doesn't exist!");
+                    System.exit(1);
+                }
                 try {
                     prettyPrint(xml);
                 } catch (Exception e) {
@@ -226,7 +226,12 @@ public class Project5 {
                 }
             }
             else {
-                client.addFlight(airline_name, number, src, depart, dest, arrive);
+                try {
+                    client.addFlight(airline_name, number, src, depart, dest, arrive);
+                } catch (Exception e) {
+                    System.err.println("Error: cannot create the flight.");
+                    System.exit(1);
+                }
                 if (print_flag) {
                     try {
                         Flight flight = new Flight(number, src, depart, dest, arrive);
@@ -237,31 +242,10 @@ public class Project5 {
                     }
                 }
             }
-//            if (word == null) {
-//                // Print all word/definition pairs
-//                Map<String, String> dictionary = client.getAllDictionaryEntries();
-//                StringWriter sw = new StringWriter();
-//                Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
-//                message = sw.toString();
-//
-//            } else if (definition == null) {
-//                // Print all dictionary entries
-//                message = Messages.formatDictionaryEntry(word, client.getAirlineAsXml(word));
-//
-//            } else {
-//                // Post the word/definition pair
-//                client.addFlight(airline_name, number, src, depart, dest, arrive);
-////                client.addFlight("Test Airline", 42, "AMS", "01/01/2020 1:00 am", "PDX", "01/02/2020 3:30 pm");
-////                client.addDictionaryEntry(word, definition);
-//                message = Messages.definedWordAs(word, definition);
-//            }
-
         } catch ( IOException ex ) {
-            error("While contacting server: " + ex);
+            error("Cannot connect to the server.");
             return;
         }
-
-//        System.out.println(message);
 
         System.exit(0);
     }
@@ -270,8 +254,12 @@ public class Project5 {
         XmlParser xmlpar = new XmlParser(xml);
         Airline airline = xmlpar.parse();
 
-        PrettyPrinter pp = new PrettyPrinter();
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        PrettyPrinter pp = new PrettyPrinter(pw);
         pp.dump(airline);
+
+        System.out.print(sw.toString());
     }
 
     private static void error( String message )
@@ -291,17 +279,10 @@ public class Project5 {
         PrintStream err = System.err;
         err.println("** " + message);
         err.println();
-        err.println("usage: java Project5 host port [word] [definition]");
+        err.println("usage: java Project5 -host host -port port airline");
         err.println("  host         Host of web server");
         err.println("  port         Port of web server");
-        err.println("  word         Word in dictionary");
-        err.println("  definition   Definition of word");
-        err.println();
-        err.println("This simple program posts words and their definitions");
-        err.println("to the server.");
-        err.println("If no definition is specified, then the word's definition");
-        err.println("is printed.");
-        err.println("If no word is specified, all dictionary entries are printed");
+        err.println("  airline      Airline name");
         err.println();
 
         System.exit(1);

@@ -88,7 +88,7 @@ public class AirlineServlet extends HttpServlet {
         Collection<Flight> flights = airline.getFlights();
 
         for (Flight flight : flights) {
-            if (flight.getSource() == src && flight.getDestination() == dest) {
+            if (flight.getSource().equals(src) && flight.getDestination().equals(dest)) {
                 newAirline.addFlight(flight);
             }
         }
@@ -112,8 +112,6 @@ public class AirlineServlet extends HttpServlet {
           missingRequiredParameter(response, AIRLINE_NAME_PARAMETER);
           return;
       }
-
-      Airline airline = getOrCreateAirline(airlineName);
 
       String flightNumber = getParameter(FLIGHT_NUMBER_PARAMETER, request );
       if ( flightNumber == null) {
@@ -141,23 +139,34 @@ public class AirlineServlet extends HttpServlet {
           return;
       }
 
-      // add try-catch
-//      System.out.println("flightNumber = " + flightNumber + "; src = " + src + "; depart = " + depart + "; dest = " + dest + "; arrive = " + arrive);
-      Flight flight = new Flight(Integer.parseInt(flightNumber), src, depart, dest, arrive);
-//      System.out.println(flight.toString());
-      airline.addFlight(flight);
+      int number = 0;
+      try {
+          number = Integer.parseInt(flightNumber);
+      } catch (Exception e) {
+          missingRequiredParameter( response, "Error: Flight number must be an integer!" );
+          return;
+      }
 
-      this.airlines.put(airlineName, airline);
+      try {
+          Flight flight = new Flight(number, src, depart, dest, arrive);
 
-      PrintWriter pw = response.getWriter();
-      pw.println(Messages.definedWordAs(airlineName, flightNumber));
-      pw.flush();
+          Airline airline = getOrCreateAirline(airlineName);
+          airline.addFlight(flight);
 
-      response.setStatus( HttpServletResponse.SC_OK);
+          this.airlines.put(airlineName, airline);
+
+          PrintWriter pw = response.getWriter();
+          pw.println(flight.toString() + " has been added to the \'" + airlineName + "\' airline.");
+          pw.flush();
+
+          response.setStatus(HttpServletResponse.SC_OK);
+      } catch (Exception e) {
+          missingRequiredParameter( response, "Error: Cannot create the flight!" );
+          return;
+      }
   }
 
     private Airline getOrCreateAirline(String airlineName) {
-//      return null;
         Airline airline = getAirline(airlineName);
         if (airline == null) {
             airline = new Airline(airlineName);
@@ -198,43 +207,6 @@ public class AirlineServlet extends HttpServlet {
       response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
   }
 
-//  /**
-//   * Writes the definition of the given word to the HTTP response.
-//   *
-//   * The text of the message is formatted with
-//   * {@link Messages#formatDictionaryEntry(String, String)}
-//   */
-//  private void writeDefinition(String word, HttpServletResponse response) throws IOException {
-//    String definition = this.dictionary.get(word);
-//
-//    if (definition == null) {
-//      response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-//
-//    } else {
-//      PrintWriter pw = response.getWriter();
-//      pw.println(Messages.formatDictionaryEntry(word, definition));
-//
-//      pw.flush();
-//
-//      response.setStatus(HttpServletResponse.SC_OK);
-//    }
-//  }
-
-//  /**
-//   * Writes all of the dictionary entries to the HTTP response.
-//   *
-//   * The text of the message is formatted with
-//   * {@link Messages#formatDictionaryEntry(String, String)}
-//   */
-//  private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
-//  {
-//      PrintWriter pw = response.getWriter();
-//      Messages.formatDictionaryEntries(pw, dictionary);
-//
-//      pw.flush();
-//
-//      response.setStatus( HttpServletResponse.SC_OK );
-//  }
 
   /**
    * Returns the value of the HTTP request parameter with the given name.

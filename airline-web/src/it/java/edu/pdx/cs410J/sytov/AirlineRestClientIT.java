@@ -33,13 +33,6 @@ public class AirlineRestClientIT {
   }
 
   @Test
-  public void test1EmptyServerContainsNoDictionaryEntries() throws IOException {
-    AirlineRestClient client = newAirlineRestClient();
-    Map<String, String> dictionary = client.getAllDictionaryEntries();
-    assertThat(dictionary.size(), equalTo(0));
-  }
-
-  @Test
   public void test2AddOneFlight() throws IOException {
     AirlineRestClient client = newAirlineRestClient();
     String airlineName = "TEST AIRLINE";
@@ -52,7 +45,6 @@ public class AirlineRestClientIT {
     client.addFlight(airlineName, flightNumber, src, depart, dest, arrive);
 
     String xml = client.getAirlineAsXml(airlineName);
-    System.out.println(xml);
     assertThat(xml, containsString(airlineName));
     assertThat(xml, containsString(String.valueOf(flightNumber)));
   }
@@ -68,11 +60,11 @@ public class AirlineRestClientIT {
 //    assertThat(definition, equalTo(testDefinition));
 //  }
 
-  @Test
-  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
-    AirlineRestClient client = newAirlineRestClient();
-    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
-    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
-    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
-  }
+//  @Test
+//  public void test4MissingRequiredParameterReturnsPreconditionFailed() throws IOException {
+//    AirlineRestClient client = newAirlineRestClient();
+//    HttpRequestHelper.Response response = client.postToMyURL(Map.of());
+//    assertThat(response.getContent(), containsString(Messages.missingRequiredParameter("word")));
+//    assertThat(response.getCode(), equalTo(HttpURLConnection.HTTP_PRECON_FAILED));
+//  }
 }

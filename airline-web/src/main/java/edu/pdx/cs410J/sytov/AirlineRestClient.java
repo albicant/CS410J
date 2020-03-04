@@ -31,73 +31,50 @@ public class AirlineRestClient extends HttpRequestHelper
         this.url = String.format( "http://%s:%d/%s/%s", hostName, port, WEB_APP, SERVLET );
     }
 
-  /**
-   * Returns all dictionary entries from the server
-   */
-  public Map<String, String> getAllDictionaryEntries() throws IOException {
-    Response response = get(this.url, Map.of());
-    return Messages.parseDictionary(response.getContent());
-  }
 
-//  /**
-//   * Returns the definition for the given word
-//   */
-//  public String getDefinition(String word) throws IOException {
-//    Response response = get(this.url, Map.of("word", word));
-//    throwExceptionIfNotOkayHttpStatus(response);
-//    String content = response.getContent();
-//    return Messages.parseDictionaryEntry(content).getValue();
-//  }
-
-  public String getAirlineAsXml(String word) throws IOException {
-    Response response = get(this.url, Map.of("airline", word));
-    throwExceptionIfNotOkayHttpStatus(response);
-    String xml = response.getContent();
-    return xml;
-  }
-
-  public String searchFlights(String airline_name, String src, String dest) throws IOException {
-    Response response = get(this.url, Map.of("airline", airline_name, "src", src, "dest", dest));
-    throwExceptionIfNotOkayHttpStatus(response);
-    String xml = response.getContent();
-    return xml;
-  }
-
-//  public void addDictionaryEntry(String word, String definition) throws IOException {
-//    Response response = postToMyURL(Map.of("word", word, "definition", definition));
-//    throwExceptionIfNotOkayHttpStatus(response);
-//  }
-
-  @VisibleForTesting
-  Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
-    return post(this.url, dictionaryEntries);
-  }
-
-  public void removeAllDictionaryEntries() throws IOException {
-    Response response = delete(this.url, Map.of());
-    throwExceptionIfNotOkayHttpStatus(response);
-  }
-
-  private Response throwExceptionIfNotOkayHttpStatus(Response response) {
-    int code = response.getCode();
-    if (code != HTTP_OK) {
-      throw new AirlineRestException(code);
+    public String getAirlineAsXml(String word) throws IOException {
+      Response response = get(this.url, Map.of("airline", word));
+      throwExceptionIfNotOkayHttpStatus(response);
+      String xml = response.getContent();
+      return xml;
     }
-    return response;
-  }
 
-  public void addFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException {
-//    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber)));
-    Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber),
-            "src", src, "depart", depart, "dest", dest, "arrive", arrive));
-    throwExceptionIfNotOkayHttpStatus(response);
-  }
-
-
-  @VisibleForTesting
-  class AirlineRestException extends RuntimeException {
-    AirlineRestException(int httpStatusCode) {
-      super("Got an HTTP Status Code of " + httpStatusCode);
+    public String searchFlights(String airline_name, String src, String dest) throws IOException {
+      Response response = get(this.url, Map.of("airline", airline_name, "src", src, "dest", dest));
+      throwExceptionIfNotOkayHttpStatus(response);
+      String xml = response.getContent();
+      return xml;
     }
-  }
+
+    @VisibleForTesting
+    Response postToMyURL(Map<String, String> dictionaryEntries) throws IOException {
+      return post(this.url, dictionaryEntries);
+    }
+
+    public void removeAllDictionaryEntries() throws IOException {
+      Response response = delete(this.url, Map.of());
+      throwExceptionIfNotOkayHttpStatus(response);
+    }
+
+    private Response throwExceptionIfNotOkayHttpStatus(Response response) {
+      int code = response.getCode();
+      if (code != HTTP_OK) {
+        throw new AirlineRestException(code);
+      }
+      return response;
+    }
+
+    public void addFlight(String airlineName, int flightNumber, String src, String depart, String dest, String arrive) throws IOException {
+      Response response = postToMyURL(Map.of("airline", airlineName, "flightNumber", String.valueOf(flightNumber),
+              "src", src, "depart", depart, "dest", dest, "arrive", arrive));
+      throwExceptionIfNotOkayHttpStatus(response);
+    }
+
+
+    @VisibleForTesting
+    class AirlineRestException extends RuntimeException {
+      AirlineRestException(int httpStatusCode) {
+        super("Got an HTTP Status Code of " + httpStatusCode);
+      }
+    }
 }

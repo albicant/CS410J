@@ -23,25 +23,7 @@ import static org.mockito.Mockito.*;
 public class AirlineServletTest {
 
   @Test
-  public void initiallyServletContainsNoDictionaryEntries() throws ServletException, IOException {
-    AirlineServlet servlet = new AirlineServlet();
-
-    HttpServletRequest request = mock(HttpServletRequest.class);
-    HttpServletResponse response = mock(HttpServletResponse.class);
-    PrintWriter pw = mock(PrintWriter.class);
-
-    when(response.getWriter()).thenReturn(pw);
-
-    servlet.doGet(request, response);
-
-    int expectedWords = 0;
-    verify(pw).println(Messages.formatWordCount(expectedWords));
-    verify(response).setStatus(HttpServletResponse.SC_OK);
-  }
-
-  @Test
   public void addingFlightToServletStoresAirlineWithFlight() throws ServletException, IOException {
-
 
     String airlineName = "TEST AIRLINE";
     int flightNumber = 123;
@@ -105,5 +87,6 @@ public class AirlineServletTest {
     assertThat(xml, containsString(airlineName));
     assertThat(xml, containsString(String.valueOf(flightNumber)));
   }
+
 
 }
