@@ -32,13 +32,27 @@ public class AirlineRestClient extends HttpRequestHelper
     }
 
 
-    public String getAirlineAsXml(String word) throws IOException {
-      Response response = get(this.url, Map.of("airline", word));
+    /**
+     * Returns XML String with information about the airline
+     * @param airline_name String with the airline's name
+     * @return XML string
+     * @throws IOException
+     */
+    public String getAirlineAsXml(String airline_name) throws IOException {
+      Response response = get(this.url, Map.of("airline", airline_name));
       throwExceptionIfNotOkayHttpStatus(response);
       String xml = response.getContent();
       return xml;
     }
 
+    /**
+     * Returns XML String with information about the airline with flights that originate and end at the desired airports
+     * @param airline_name String with the airline's name
+     * @param src Source airport
+     * @param dest Destination airport
+     * @return XML string
+     * @throws IOException
+     */
     public String searchFlights(String airline_name, String src, String dest) throws IOException {
       Response response = get(this.url, Map.of("airline", airline_name, "src", src, "dest", dest));
       throwExceptionIfNotOkayHttpStatus(response);

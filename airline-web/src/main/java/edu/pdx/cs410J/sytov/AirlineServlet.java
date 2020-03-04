@@ -29,10 +29,7 @@ public class AirlineServlet extends HttpServlet {
   private final Map<String, Airline> airlines = new HashMap<>();
 
   /**
-   * Handles an HTTP GET request from a client by writing the definition of the
-   * word specified in the "word" HTTP parameter to the HTTP response.  If the
-   * "word" parameter is not specified, all of the entries in the dictionary
-   * are written to the HTTP response.
+   * Handles an HTTP GET request from a client.
    */
   @Override
   protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException

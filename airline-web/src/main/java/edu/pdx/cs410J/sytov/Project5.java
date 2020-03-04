@@ -29,18 +29,24 @@ public class Project5 {
     /**
      * Prints the README for the Project.
      */
-    // update README
     public static void printReadMe() {
         String str1 = "CS410J Winter2020 - Project 5 by Gennadii Sytov\n";
-        String str2 = "This project parses the command line arguments to create an Airline class\n";
-        String str3 = "and a Flight class. And then it adds the Flight to the Airline.\n"  +
-                "Optionally, a text file  or an XML file can be specified to upload and save the Airline from/into it.\n" +
-                "In addition to it, another file can be specified to save the Airline in a nicely-formatted textual presentation of an airline's flights.\n" +
-                "The program has \"-print\", \"-textFile\" followed by the file name, \"-xmlFile\" followed by the file name, \n" +
-                "\"-pretty\" followed by the file name and \"-README\" options. It is an error to specify both \"-textFile\" and \"-xmlFile\".";
-        System.out.println(str1+str2+str3);
+        String str2 = "This project parses the command line arguments to connect to the server, create airlines, flights, add flights to the airlines, search and print airline and flights information.\n"+
+                      "The following options can be specified: \n" +
+                      "\t-host hostname                         Host computer on which the server runs\n" +
+                      "\t-port port                             Port on which the server is listening\n" +
+                      "\t-search airline source destination     Search for flights\n" +
+                      "\t-print                                 Prints a description of the new flight\n" +
+                      "\t-README                                Prints the README for this project.";
+        System.out.println(str1+str2);
     }
 
+    /**
+     * The main function. Parses the string of arguments from the console. Communicates with the client to connect to the server,
+     * creates an instance of the Airline class and adds a Flight to the Airline,
+     * if sufficient arguments provided. Optionally prints the "README" and/or the information about the added Flight.
+     * @param args a string of console arguments
+     */
     public static void main(String... args) {
 
         for (String arg : args) {
@@ -250,6 +256,12 @@ public class Project5 {
         System.exit(0);
     }
 
+    /**
+     * Pretty prints the information about the airline to standard out.
+     * @param xml -String which contains information about an airline in XML format
+     * @throws ParserException
+     * @throws IOException
+     */
     private static void prettyPrint(String xml) throws ParserException, IOException {
         XmlParser xmlpar = new XmlParser(xml);
         Airline airline = xmlpar.parse();
@@ -262,6 +274,10 @@ public class Project5 {
         System.out.print(sw.toString());
     }
 
+    /**
+     * Helper function to print error messages
+     * @param message String with error message
+     */
     private static void error( String message )
     {
         PrintStream err = System.err;
@@ -283,6 +299,7 @@ public class Project5 {
         err.println("  host         Host of web server");
         err.println("  port         Port of web server");
         err.println("  airline      Airline name");
+        err.println("  For more options use -README");
         err.println();
 
         System.exit(1);
