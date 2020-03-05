@@ -60,6 +60,18 @@ public class Project5IT extends InvokeMainTestCase {
         assertThat(result.getTextWrittenToStandardError(), containsString("Cannot connect to the server."));
     }
 
+//    @Test(expected = AirlineRestException.class)
+//    public void test3NoDefinitionsThrowsAppointmentBookRestException() throws Throwable {
+//        String str = "-host " + HOSTNAME + " -port " + 8080;
+//        String[] args = str.split(" ");
+//        try {
+//            MainMethodResult result = invokeMain( Project5.class, args);
+//
+//        } catch (IllegalArgumentException ex) {
+//            throw ex.getCause().getCause();
+//        }
+//    }
+
 //    @Test
 //    public void test4AddNewAirline() {
 //        String host_port = "-host " + HOSTNAME + " -port " + PORT;

@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.sytov;
 
+import edu.pdx.cs410J.InvokeMainTestCase;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -47,6 +48,24 @@ public class AirlineRestClientIT {
     String xml = client.getAirlineAsXml(airlineName);
     assertThat(xml, containsString(airlineName));
     assertThat(xml, containsString(String.valueOf(flightNumber)));
+  }
+
+  @Test(expected = AirlineRestClient.AirlineRestException.class)
+  public void test3InvalidFlightDataThrowsAppointmentBookRestException() throws Throwable {
+    try {
+      AirlineRestClient client = newAirlineRestClient();
+      String airlineName = "TEST AIRLINE";
+      int flightNumber = 123;
+      String src = "AMS";
+      String depart = "3/1/2020 1:00 pm";
+      String dest = "PDX";
+      String arrive = "3/1/2020";
+
+      client.addFlight(airlineName, flightNumber, src, depart, dest, arrive);
+
+    } catch (IllegalArgumentException ex) {
+      throw ex.getCause().getCause();
+    }
   }
 
 //  @Test
