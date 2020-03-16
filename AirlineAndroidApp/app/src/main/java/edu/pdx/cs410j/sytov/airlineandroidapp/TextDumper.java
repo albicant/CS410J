@@ -45,29 +45,30 @@ public class TextDumper implements AirlineDumper<Airline> {
 //        }
         try {
             File file = new File(this.dir, this.file_name);
-            Writer writer = new FileWriter(file);
+
             if (airline == null) {
-                writer.write("");
+                file.delete();
+                return;
             }
-            else {
-                String airline_name = airline.getName();
-                writer.write(airline_name + "\n");
+            Writer writer = new FileWriter(file);
+            String airline_name = airline.getName();
+            writer.write(airline_name + "\n");
 
-                Collection<Flight> flights = airline.getFlights();
-                for (Flight flight : flights) {
-                    int number = flight.getNumber();
-                    String src = flight.getSource();
-                    String depart = flight.getDepartureToSave();
-                    String dest = flight.getDestination();
-                    String arrive = flight.getArrivalToSave();
+            Collection<Flight> flights = airline.getFlights();
+            for (Flight flight : flights) {
+                int number = flight.getNumber();
+                String src = flight.getSource();
+                String depart = flight.getDepartureToSave();
+                String dest = flight.getDestination();
+                String arrive = flight.getArrivalToSave();
 
-                    writer.write(Integer.toString(number) + " ");
-                    writer.write(src + " ");
-                    writer.write(depart + " ");
-                    writer.write(dest + " ");
-                    writer.write(arrive + "\n");
-                }
+                writer.write(Integer.toString(number) + " ");
+                writer.write(src + " ");
+                writer.write(depart + " ");
+                writer.write(dest + " ");
+                writer.write(arrive + "\n");
             }
+
 
             writer.flush();
             writer.close();
