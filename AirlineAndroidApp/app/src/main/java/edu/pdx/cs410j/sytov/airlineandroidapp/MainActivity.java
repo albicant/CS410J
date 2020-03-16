@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import edu.pdx.cs410J.ParserException;
 
@@ -150,6 +154,21 @@ public class MainActivity extends AppCompatActivity {
     public void deleteAirline(View view) {
         this.airline = null;
         // popup an approrpiate message
+    }
+
+    public void searchFlights(View view) throws IOException {
+        // change it later to search flights
+        setContentView(R.layout.pretty_print);
+        TextView tv = findViewById(R.id.prettyPrint);
+
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        PrettyPrinter pp = new PrettyPrinter(pw);
+        pp.dump(this.airline);
+
+        tv.setText(sw.toString());
+        tv.setMovementMethod(new ScrollingMovementMethod());
+//        this.mainMenu(view);
     }
 
 //    @Override
