@@ -1,4 +1,5 @@
-package edu.pdx.cs410J.sytov.airlineandroidapp;
+package edu.pdx.cs410j.sytov.airlineandroidapp;
+
 
 import edu.pdx.cs410J.AirlineDumper;
 import edu.pdx.cs410J.AirportNames;

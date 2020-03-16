@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Airline Android App</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="print_readme">Print README</string>
 </resources>
