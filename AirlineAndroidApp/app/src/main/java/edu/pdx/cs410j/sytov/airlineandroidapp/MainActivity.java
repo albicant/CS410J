@@ -118,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
     private void createAirline(View view, String airline_name) {
         if (this.airline == null) {
             this.airline = new Airline(airline_name);
+            this.displayPopupMessage(view, "You have successfully created the airline.");
         }
         else {
-            displayPopupMessage(view, "Cannot create the airline. An airline already exist!");
+            this.displayPopupMessage(view, "Cannot create the airline. An airline already exist!");
         }
     }
 
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             displayPopupMessage(view, "Flight number must be an integer!");
             return;
         }
-        String src = et_src.getText().toString();
+        String src = et_src.getText().toString().toUpperCase();
         if (!verifyAirportCode(src)) {
             displayPopupMessage(view, "Invalid airport source code!");
             return;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
             displayPopupMessage(view, "Invalid departure time! Time must use the following format: MM/dd/yyyy hh:mm a");
             return;
         }
-        String dest = et_dest.getText().toString();
+        String dest = et_dest.getText().toString().toUpperCase();
         if (!verifyAirportCode(dest)) {
             displayPopupMessage(view, "Invalid airport destination code!");
             return;
@@ -172,8 +173,8 @@ public class MainActivity extends AppCompatActivity {
             this.airline.addFlight(flight);
         }
 
+        displayPopupMessage(view, "You have successfully added the flight #" + str_number + " to airline \"" + this.airline.getName() + "\".");
         setContentView(R.layout.activity_main);
-        displayPopupMessage(view, "You have scornfully added the flight #" + str_number + " to airline \"" + this.airline.getName() + "\".");
     }
 
     public void printReadme(View view) {
@@ -212,11 +213,11 @@ public class MainActivity extends AppCompatActivity {
     public void searchFlights(View view) throws IOException {
         EditText et_src = findViewById(R.id.search_src);
         EditText et_dest = findViewById(R.id.search_dest);
-        String src = et_src.getText().toString();
-        String dest = et_dest.getText().toString();
+        String src = et_src.getText().toString().toUpperCase();
+        String dest = et_dest.getText().toString().toUpperCase();
 
         if ((src == null || src.equals("")) && (dest == null || dest.equals(""))) {
-            displayPopupMessage(view, "No airports were specified, all flights will be displayed.");
+            displayPopupMessage(view, "No airports were specified, all flights have been displayed.");
             this.prettyPrintFlights(view, this.airline);
         }
         else if (src == null || src.equals("")) {

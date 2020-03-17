@@ -96,7 +96,7 @@
                 android:id="@+id/enter_depart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="mm/dd/yyyy hh:mm am/pm"
+                android:hint="MM/dd/yyyy hh:mm a"
                 android:inputType="text" />
         </LinearLayout>
 
@@ -131,7 +131,7 @@
                 android:id="@+id/enter_arrive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="mm/dd/yyyy hh:mm am/pm"
+                android:hint="MM/dd/yyyy hh:mm a"
                 android:inputType="text" />
         </LinearLayout>
 
