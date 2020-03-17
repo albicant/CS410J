@@ -9,26 +9,29 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="648dp"
-        android:text="@string/hello_world"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:text="Welcome to the Airline Manager app\n\t\t\t\t\t\t\t\tby Gennadii Sytov"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        app:layout_constraintVertical_bias="0.281" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.705" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="206dp"
         android:layout_height="60dp"
         android:onClick="printReadme"
-        android:text="@string/print_readme"
+        android:text="Help"
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.217" />
+        app:layout_constraintVertical_bias="0.296" />
 
     <Button
         android:id="@+id/button6"
@@ -37,6 +40,7 @@
         android:layout_marginTop="32dp"
         android:onClick="goToAddFlightMenu"
         android:text="Add a Flight"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
@@ -47,13 +51,14 @@
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
         android:text="Search flights"
-        android:onClick="searchFlights"
+        android:onClick="goToSearchFlightsMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button6" />
 
     <Button
+        android:id="@+id/button"
         android:layout_width="206dp"
         android:layout_height="60dp"
         android:layout_marginTop="32dp"
